@@ -1,6 +1,13 @@
 'use client'
 
-import { Header } from '@rambo-react/ui-meteors'
+import { LogoutModal, useLogout } from '@/features'
+import {
+  BookmarkOutline,
+  Header,
+  LogOutOutline,
+  SettingsOutline,
+  TrendingUp,
+} from '@rambo-react/ui-meteors'
 
 import { useHeaderActions } from '../hooks/useHeaderActions'
 
@@ -10,6 +17,39 @@ type Props = {
 
 export const HeaderApp = ({ isAuth = false }: Props) => {
   const { logInHandler, signUpHandler, ...actions } = useHeaderActions()
+  const { handleCloseModal, handleConfirmLogout, setShowModal, showModal } = useLogout()
 
-  return <Header {...actions} isAuthorized={isAuth} />
+  return (
+    <>
+      <Header
+        {...actions}
+        isAuthorized={isAuth}
+        menuItems={[
+          {
+            icon: <SettingsOutline height={24} width={24} />,
+            label: 'Profile settings',
+            onClick: () => console.log('Profile clicked'),
+            visible: true,
+          },
+          {
+            disabled: true,
+            icon: <TrendingUp height={24} width={24} />,
+            label: 'Statistics',
+            onClick: () => console.log('Statistics clicked'),
+          },
+          {
+            icon: <BookmarkOutline height={24} width={24} />,
+            label: 'Favorites',
+            onClick: () => console.log('Statistics clicked'),
+          },
+          {
+            icon: <LogOutOutline height={24} width={24} />,
+            label: 'Log-out',
+            onClick: () => setShowModal(true),
+          },
+        ]}
+      />
+      <LogoutModal isOpen={showModal} onClose={handleCloseModal} onConfirm={handleConfirmLogout} />
+    </>
+  )
 }
