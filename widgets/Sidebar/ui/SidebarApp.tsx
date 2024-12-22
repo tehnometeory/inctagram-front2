@@ -1,4 +1,4 @@
-import { LogoutModal, useLogout } from '@/features'
+import { LogOutModal, useLogout } from '@/features'
 import { useMenuHandlers } from '@/shared'
 import { Sidebar } from '@rambo-react/ui-meteors'
 
@@ -11,7 +11,7 @@ export const SidebarApp = () => {
   return (
     <div className={s.container}>
       <Sidebar callbacks={[...sidebarCallbacks, logoutItem]} />
-      <LogoutModal isOpen={showModal} onClose={handleCloseModal} onConfirm={handleConfirmLogout} />
+      <LogOutModal isOpen={showModal} onClose={handleCloseModal} onConfirm={handleConfirmLogout} />
     </div>
   )
 }

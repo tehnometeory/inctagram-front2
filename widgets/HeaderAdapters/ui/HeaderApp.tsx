@@ -1,6 +1,6 @@
 'use client'
 
-import { LogoutModal, useLogout } from '@/features'
+import { LogOutModal, useLogout } from '@/features'
 import {
   BookmarkOutline,
   Header,
@@ -44,12 +44,12 @@ export const HeaderApp = ({ isAuth = false }: Props) => {
           },
           {
             icon: <LogOutOutline height={24} width={24} />,
-            label: 'Log-out',
+            label: 'Log Out',
             onClick: () => setShowModal(true),
           },
         ]}
       />
-      <LogoutModal isOpen={showModal} onClose={handleCloseModal} onConfirm={handleConfirmLogout} />
+      <LogOutModal isOpen={showModal} onClose={handleCloseModal} onConfirm={handleConfirmLogout} />
     </>
   )
 }

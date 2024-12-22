@@ -1,6 +1,6 @@
 import { ProfileConfirmationModal } from '@/shared'
 
-import s from './LogoutModal.module.scss'
+import s from './LogOutModal.module.scss'
 
 type Props = {
   isOpen: boolean
@@ -8,7 +8,7 @@ type Props = {
   onConfirm: () => void
 }
 
-export const LogoutModal = ({ isOpen, onClose, onConfirm }: Props) => {
+export const LogOutModal = ({ isOpen, onClose, onConfirm }: Props) => {
   return (
     <ProfileConfirmationModal
       buttonMode={'double'}
