@@ -1,0 +1,101 @@
+@use '@rambo-react/ui-meteors/dist/typography' as typography;
+
+.container {
+  display: flex;
+  gap: 38px;
+  width: 100%;
+  margin-bottom: 48px;
+
+  .avatar {
+    border-radius: 50%;
+  }
+
+  .infoProfileWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: var(--light-100);
+
+    .infoProfile {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+
+      width: 100%;
+      margin-bottom: 19px;
+
+      .titleProfile {
+        @include typography.H1;
+      }
+    }
+
+    .infoStatistic {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-start;
+
+      margin-bottom: 23px;
+
+      .statistic {
+        text-align: start;
+
+        @include typography.Bold_text_14;
+
+        .textStatistic {
+          @include typography.Regular_text_14;
+        }
+      }
+
+      .statistic:nth-child(1) {
+        margin-right: 100px;
+      }
+
+      .statistic:nth-child(2) {
+        margin-right: 88px;
+      }
+    }
+
+    .textInfo {
+      margin: 0;
+
+      @include typography.Regular_text_16;
+    }
+  }
+}
+
+@media (width <= 700px) {
+  .container {
+    flex-wrap: wrap;
+
+    .infoProfileWrapper {
+      .infoStatistic {
+        .statistic:nth-child(1) {
+          margin-right: 60px;
+        }
+
+        .statistic:nth-child(2) {
+          margin-right: 60px;
+        }
+      }
+    }
+  }
+}
+
+@media (width <= 425px) {
+  .container {
+    .avatar {
+      width: 72px;
+      height: 72px;
+    }
+
+    .infoProfileWrapper {
+      .infoProfile {
+        .btn {
+          display: none;
+        }
+      }
+    }
+  }
+}
