@@ -1,8 +1,14 @@
 export const applyFilterToImage = (imageSrc: string, filter: string): Promise<string> => {
   return new Promise((resolve, reject) => {
+    // Если фильтр 'none', сразу возвращаем изображение без изменений
+    if (filter === 'none') {
+      resolve(imageSrc)
+
+      return
+    }
+
     const image = new Image()
 
-    image.crossOrigin = 'Anonymous' // Устанавливаем CORS для загрузки
     image.src = imageSrc
 
     image.onload = () => {
@@ -17,8 +23,8 @@ export const applyFilterToImage = (imageSrc: string, filter: string): Promise<st
       canvas.width = image.width
       canvas.height = image.height
 
-      // Применяем фильтр, если он есть
-      ctx.filter = filter !== 'none' ? filter : 'none'
+      // Применяем фильтр
+      ctx.filter = filter
 
       // Рисуем изображение на canvas
       ctx.drawImage(image, 0, 0)

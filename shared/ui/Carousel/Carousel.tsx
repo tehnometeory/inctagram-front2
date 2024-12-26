@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { ArrowIosBack, ArrowIosBackOutline, ArrowIosForward } from '@rambo-react/ui-meteors'
 import clsx from 'clsx'
@@ -15,21 +15,16 @@ import 'swiper/css/pagination'
 import styles from './Carousel.module.scss'
 
 type Props = {
+  activeFilters?: string[]
   activeSlide?: number
-  filters?: string[]
   images: string[]
   setActiveSlide?: (index: number) => void
   type: 'Black' | 'Gray'
 }
 
-export const Carousel = ({ activeSlide = 0, filters, images, setActiveSlide, type }: Props) => {
+export const Carousel = ({ activeFilters, activeSlide, images, setActiveSlide, type }: Props) => {
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
-
-  const filtersToUse = useMemo(
-    () => filters ?? new Array(images.length).fill('Normal'),
-    [filters, images.length]
-  )
 
   const handleSlideChange = useCallback(
     (swiper: any) => {
@@ -43,7 +38,6 @@ export const Carousel = ({ activeSlide = 0, filters, images, setActiveSlide, typ
   return (
     <div className={styles.container}>
       <Swiper
-        initialSlide={activeSlide}
         loop={false}
         modules={[Navigation, Pagination]}
         navigation={{
@@ -74,14 +68,17 @@ export const Carousel = ({ activeSlide = 0, filters, images, setActiveSlide, typ
                 loading={index === 0 ? 'eager' : 'lazy'}
                 priority={index === 0}
                 sizes={'(max-width: 490px) 100vw, 490px'}
-                src={src}
-                style={{ filter: filtersToUse[index], objectFit: 'cover' }}
+                src={`data:image/png;base64,${src}`}
+                style={{
+                  filter: index === activeSlide ? activeFilters?.[index] : 'none',
+                  objectFit: 'cover',
+                }}
               />
             </div>
           </SwiperSlide>
         ))}
 
-        <div className={clsx(styles[`swiperButtonNext${type}`], { [styles.hiddenButton]: isEnd })}>
+        <div className={clsx(styles[`swiperButtonNext${type}`], isEnd && styles.hiddenButton)}>
           <ArrowIosForward
             className={styles[`swiperNextIcon${type}`]}
             fill={'white'}

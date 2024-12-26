@@ -1,53 +1,56 @@
 import { useState } from 'react'
 
-import image1 from '@/public/images/expiredEmail.svg'
-import image3 from '@/public/images/rabstol_net_fields_15.jpg'
-import image2 from '@/public/images/sign-up.svg'
 import { PostFilters } from '@/shared'
 import { applyFilterToImage } from '@/shared/lib/applyFilterToImage'
 import { Carousel } from '@/shared/ui/Carousel'
 
+import styles from './PostFiltersContainer.module.scss'
+
+import { imagesbase64 } from './base64images'
+
 export const PostFiltersContainer = () => {
+  const [images, setImages] = useState(imagesbase64)
+  const [modifiedImages, setModifiedImages] = useState<string[]>([])
   const [activeImageIndex, setActiveImageIndex] = useState(0)
-  const [images, setImages] = useState([image1, image2, image3]) // Массив изображений
-  const [modifiedImages, setModifiedImages] = useState([image1, image2]) // Массив изменённых изображений
-  const [activeImage, setActiveImage] = useState(images[0])
-  const [filters, setFilters] = useState<string[]>(() => Array(images.length).fill('none'))
-  const setActiveImageHandler = (index: number) => {
-    setActiveImageIndex(index)
+  const [activeFilters, setActiveFilters] = useState<string[]>(() =>
+    Array(images.length).fill('none')
+  )
+
+  const setFilter = (filter: string, activeImageIndex: number) => {
+    setActiveFilters(prevFilters =>
+      prevFilters.map((none, i) => (i === activeImageIndex ? filter : none))
+    )
   }
+  const processImages = async () => {
+    const modifiedImagesArray: string[] = []
 
-  const setImageFilter = (filter: string, filterIndex: number) => {
-    setActiveImage(images[activeImageIndex])
+    for (let i = 0; i < images.length; i++) {
+      const modifiedImage = await applyFilterToImage(images[i], activeFilters[i])
 
-    const updatedFilters = [...filters]
+      modifiedImagesArray.push(modifiedImage)
+    }
 
-    updatedFilters[filterIndex] = filter // Обновляем фильтр для нужного изображения
-    setFilters(updatedFilters)
-
-    const updatedImages = [...modifiedImages] // Копируем текущий массив изображений
-
-    applyFilterToImage(images[filterIndex], filter).then(filteredImage => {
-      updatedImages[filterIndex] = filteredImage // Обновляем изображение в массиве
-      setModifiedImages(updatedImages) // Сохраняем обновлённый массив изображений
-    })
+    setModifiedImages(modifiedImagesArray)
   }
-
-  const handleNext = () => {
-    // Отправка изображений в Publish (например, передаем в компонент Publish)
-    console.log(modifiedImages)
+  const handleNext = async () => {
+    await processImages() // Ждём завершения обработки изображений
+    console.log(modifiedImages) // Теперь выводим результат после обновления состояния
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <Carousel
-        activeFilter={filters[activeImageIndex]}
-        filters={filters}
+        activeFilters={activeFilters}
+        activeSlide={activeImageIndex}
         images={images}
-        setActiveSlide={setActiveImageHandler}
+        setActiveSlide={setActiveImageIndex}
         type={'Gray'}
       />
-      <PostFilters activeImage={activeImage} setFilters={setImageFilter} />
+      <PostFilters
+        activeImage={images[activeImageIndex]}
+        activeImageIndex={activeImageIndex}
+        setFilter={setFilter}
+      />
       <button onClick={handleNext}>Next</button>
     </div>
   )
