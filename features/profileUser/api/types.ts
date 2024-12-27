@@ -1,5 +1,3 @@
-import { ResetPasswordResponse } from '@/features/forgotPassword/api/types'
-
 export type ProfileUserResponse = {
   aboutMe: string
   id: string

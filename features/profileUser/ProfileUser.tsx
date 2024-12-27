@@ -7,7 +7,11 @@ import s from './ProfileUser.module.scss'
 import { useMyProfileQuery } from './api'
 
 export const ProfileUser = () => {
-  const { data, error } = useMyProfileQuery()
+  const { data } = useMyProfileQuery()
+
+  if (!data) {
+    return
+  }
 
   return (
     <div className={s.profile}>
@@ -21,31 +25,27 @@ export const ProfileUser = () => {
         />
         <div className={s.infoProfileWrapper}>
           <div className={s.infoProfile}>
-            <span className={s.titleProfile}>URLProfile</span>
+            <span className={s.titleProfile}>{data.username}</span>
             <Button className={s.btn} variant={'secondary'}>
               Profile Settings
             </Button>
           </div>
           <div className={s.infoStatistic}>
             <span className={s.statistic}>
-              2 218
+              {data.profileFollowing}
               <br />
               <small className={s.textStatistic}>Following</small>
             </span>
             <span className={s.statistic}>
-              2 358 <br />
+              {data.profileFollowers} <br />
               <small className={s.textStatistic}> Followers</small>
             </span>
             <span className={s.statistic}>
-              2 764
+              {data.postsCount}
               <br /> <small className={s.textStatistic}>Publications</small>
             </span>
           </div>
-          <p className={s.textInfo}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-          </p>
+          <p className={s.textInfo}>{data.aboutMe}</p>
         </div>
       </div>
     </div>

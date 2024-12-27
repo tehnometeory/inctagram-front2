@@ -24,8 +24,14 @@ export const profileUserApi = createApi({
         url: 'profile/my-profile',
       }),
     }),
+    profileUserById: builder.query<ProfileUserResponse, string>({
+      query: id => ({
+        method: 'GET',
+        url: `profile/${id}`,
+      }),
+    }),
   }),
   reducerPath: 'profileUserApi',
 })
 
-export const { useMyProfileQuery } = profileUserApi
+export const { useMyProfileQuery, useProfileUserByIdQuery } = profileUserApi
