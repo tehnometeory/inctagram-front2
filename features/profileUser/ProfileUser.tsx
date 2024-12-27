@@ -9,9 +9,6 @@ import { useMyProfileQuery } from './api'
 export const ProfileUser = () => {
   const { data, error } = useMyProfileQuery()
 
-  console.log('data :', data)
-  console.log('error :', error)
-
   return (
     <div className={s.profile}>
       <div className={s.container}>
