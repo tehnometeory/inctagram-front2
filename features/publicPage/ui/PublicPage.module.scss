@@ -1,0 +1,15 @@
+.publicPage {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  align-items: center;
+
+  padding-top: 24px;
+}
+
+.posts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 12px;
+  justify-content: center;
+}
