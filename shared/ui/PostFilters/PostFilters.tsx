@@ -39,7 +39,7 @@ export const PostFilters = ({ activeImage, activeImageIndex, setFilter }: Filter
             alt={filterName}
             height={108}
             priority
-            src={`data:image/png;base64,${activeImage}`}
+            src={activeImage}
             style={{ filter: filterValue, objectFit: 'cover' }}
             width={108}
           />

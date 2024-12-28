@@ -1,6 +1,5 @@
 export const applyFilterToImage = (imageSrc: string, filter: string): Promise<string> => {
   return new Promise((resolve, reject) => {
-    // Если фильтр 'none', сразу возвращаем изображение без изменений
     if (filter === 'none') {
       resolve(imageSrc)
 

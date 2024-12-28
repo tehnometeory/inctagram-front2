@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
+import image1 from '@/public/images/expiredEmail.svg'
+import image2 from '@/public/images/sign-up.svg'
 import { PostFilters } from '@/shared'
 import { applyFilterToImage } from '@/shared/lib/applyFilterToImage'
 import { Carousel } from '@/shared/ui/Carousel'
 
 import styles from './PostFiltersContainer.module.scss'
 
-import { imagesbase64 } from './base64images'
-
 export const PostFiltersContainer = () => {
-  const [images, setImages] = useState(imagesbase64)
+  const [images, setImages] = useState([image1, image2])
   const [modifiedImages, setModifiedImages] = useState<string[]>([])
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [activeFilters, setActiveFilters] = useState<string[]>(() =>
@@ -21,20 +21,17 @@ export const PostFiltersContainer = () => {
       prevFilters.map((none, i) => (i === activeImageIndex ? filter : none))
     )
   }
-  const processImages = async () => {
+
+  const handleNext = async () => {
     const modifiedImagesArray: string[] = []
 
     for (let i = 0; i < images.length; i++) {
-      const modifiedImage = await applyFilterToImage(images[i], activeFilters[i])
+      const modifiedImage = await applyFilterToImage(images[i].src, activeFilters[i])
 
       modifiedImagesArray.push(modifiedImage)
     }
 
     setModifiedImages(modifiedImagesArray)
-  }
-  const handleNext = async () => {
-    await processImages() // Ждём завершения обработки изображений
-    console.log(modifiedImages) // Теперь выводим результат после обновления состояния
   }
 
   return (
@@ -43,8 +40,8 @@ export const PostFiltersContainer = () => {
         activeFilters={activeFilters}
         activeSlide={activeImageIndex}
         images={images}
-        setActiveSlide={setActiveImageIndex}
-        type={'Gray'}
+        passActiveSlide={setActiveImageIndex}
+        type={'Black'}
       />
       <PostFilters
         activeImage={images[activeImageIndex]}
