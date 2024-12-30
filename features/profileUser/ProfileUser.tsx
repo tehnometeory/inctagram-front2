@@ -1,13 +1,15 @@
 'use client'
 import { Button } from '@rambo-react/ui-meteors'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
 import s from './ProfileUser.module.scss'
 
-import { useMyProfileQuery } from './api'
+import { useProfileUserByIdQuery } from './api'
 
 export const ProfileUser = () => {
-  const { data } = useMyProfileQuery()
+  const { userId } = useParams()
+  const { data } = useProfileUserByIdQuery(userId as string)
 
   if (!data) {
     return
