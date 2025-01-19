@@ -28,8 +28,17 @@ export const applyFilterToImage = (imageSrc: string, filter: string): Promise<st
       // Рисуем изображение на canvas
       ctx.drawImage(image, 0, 0)
 
-      // Возвращаем изображение в формате Base64
-      resolve(canvas.toDataURL('image/png'))
+      // Создаём Blob из Canvas
+      canvas.toBlob(blob => {
+        if (!blob) {
+          return reject(new Error('Failed to create Blob from canvas'))
+        }
+
+        // Генерируем Blob URL
+        const blobUrl = URL.createObjectURL(blob)
+
+        resolve(blobUrl)
+      }, 'image/jpeg')
     }
 
     image.onerror = error => {

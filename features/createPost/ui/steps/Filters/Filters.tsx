@@ -1,8 +1,10 @@
 import React from 'react'
 
+import { setActiveFilter } from '@/features/createPost/model'
+import { useAppDispatch } from '@/shared'
 import Image from 'next/image'
 
-import styles from './PostFilters.module.scss'
+import styles from './Filters.module.scss'
 
 const imageFilters = {
   Clarendon: 'brightness(1.2) contrast(1.3) saturate(1.5)',
@@ -19,12 +21,12 @@ const imageFilters = {
 type FilterProps = {
   activeImage: string
   activeImageIndex: number
-  setFilter: (filter: string, activeImageIndex: number) => void
 }
 
-export const PostFilters = ({ activeImage, activeImageIndex, setFilter }: FilterProps) => {
+export const Filters = ({ activeImage, activeImageIndex }: FilterProps) => {
+  const dispatch = useAppDispatch()
   const onClickHandler = (filterValue: string, activeImageIndex: number) => {
-    setFilter(filterValue, activeImageIndex)
+    dispatch(setActiveFilter({ filter: filterValue, index: activeImageIndex }))
   }
 
   return (

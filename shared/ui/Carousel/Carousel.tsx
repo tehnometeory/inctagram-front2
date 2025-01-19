@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from 'react'
 
+import { useAppSelector } from '@/shared'
 import { ArrowIosBack, ArrowIosBackOutline, ArrowIosForward } from '@rambo-react/ui-meteors'
 import clsx from 'clsx'
 import Image from 'next/image'
@@ -15,16 +16,19 @@ import 'swiper/css/pagination'
 import styles from './Carousel.module.scss'
 
 type Props = {
-  activeFilters?: string[]
-  activeSlide?: number
+  activeSlide: number
   images: string[]
   passActiveSlide?: (index: number) => void
   type: 'Black' | 'Gray'
 }
 
-export const Carousel = ({ activeFilters, activeSlide, images, passActiveSlide, type }: Props) => {
+export const Carousel = ({ activeSlide, images, passActiveSlide, type }: Props) => {
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
+
+  const activeFilter = useAppSelector(
+    state => state.createPost.currentPost.images[activeSlide].activeFilter
+  )
 
   const handleSlideChange = useCallback(
     (swiper: any) => {
@@ -72,7 +76,7 @@ export const Carousel = ({ activeFilters, activeSlide, images, passActiveSlide, 
                 sizes={'(max-width: 490px), 490px'}
                 src={src}
                 style={{
-                  filter: index === activeSlide ? activeFilters?.[index] : 'none',
+                  filter: index === activeSlide ? activeFilter : 'none',
                   objectFit: 'cover',
                 }}
               />

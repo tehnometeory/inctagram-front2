@@ -22,9 +22,10 @@ export const createPostSlice = createSlice({
     addImage(state, action: PayloadAction<AddImagePayload>) {
       const image = {
         ...action.payload,
+        activeFilter: 'none',
         aspect: 1,
-        croppedImage: null,
-        filteredImage: null,
+        croppedImage: '', //спросить у Артема!
+        filteredImage: '',
         zoom: 1,
       }
 
@@ -87,6 +88,11 @@ export const createPostSlice = createSlice({
     saveDraft(state) {
       state.draft = { ...state.currentPost }
     },
+    setActiveFilter(state, action: PayloadAction<{ filter: string; index: number }>) {
+      const { filter, index } = action.payload
+
+      state.currentPost.images[index].activeFilter = filter
+    },
     setAspect(state, action: PayloadAction<{ aspect: number; id: string }>) {
       const { aspect, id } = action.payload
 
@@ -120,6 +126,11 @@ export const createPostSlice = createSlice({
         image.id === id ? { ...image, croppedImage: croppedImage } : image
       )
     },
+    updateFilteredImage(state, action: PayloadAction<{ filteredImage: string; index: number }>) {
+      const { filteredImage, index } = action.payload
+
+      state.currentPost.images[index].filteredImage = filteredImage
+    },
   },
 })
 
@@ -133,6 +144,7 @@ export const {
   removeImage,
   resetCurrentPost,
   saveDraft,
+  setActiveFilter,
   setAspect,
   setAspectControl,
   setThumbnailsControl,
@@ -140,6 +152,7 @@ export const {
   setZoomControl,
   showModal,
   updateCroppedImage,
+  updateFilteredImage,
 } = createPostSlice.actions
 
 export const createPostReducer = createPostSlice.reducer
