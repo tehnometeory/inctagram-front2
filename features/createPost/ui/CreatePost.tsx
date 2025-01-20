@@ -1,5 +1,5 @@
 'use client'
-
+import { CancelPostModal } from '@/features'
 import { CroppingHeader } from '@/features/createPost/ui/customHeaders/CroppingHeader/CroppingHeader'
 import { FilterHeader } from '@/features/createPost/ui/customHeaders/FilterHeader/FilterHeader'
 import { PublishHeader } from '@/features/createPost/ui/customHeaders/PublishHeader/PublishHeader'
@@ -31,23 +31,26 @@ export const CreatePost = () => {
   }
 
   return (
-    <Modal
-      className={s.modal}
-      isOpen={isModalOpen}
-      onClose={currentStep === 1 ? closeHandler : undefined}
-      onCloseOut={currentStep > 1 ? openCancelPostCreationModal : undefined}
-      {...(currentStep === 1 && { title: 'Add Photo' })}
-      customHeader={
-        {
-          2: <CroppingHeader />,
-          3: <FilterHeader />,
-          4: <PublishHeader />,
-        }[currentStep] || undefined
-      }
-    >
-      {currentStep === 1 && <AddImage />}
-      {currentStep === 2 && <CropImage />}
-      {currentStep === 3 && <FiltersContainer />}
-    </Modal>
+    <>
+      <CancelPostModal />
+      <Modal
+        className={s.modal}
+        isOpen={isModalOpen}
+        onClose={currentStep === 1 ? closeHandler : undefined}
+        onCloseOut={currentStep > 1 ? openCancelPostCreationModal : undefined}
+        {...(currentStep === 1 && { title: 'Add Photo' })}
+        customHeader={
+          {
+            2: <CroppingHeader />,
+            3: <FilterHeader />,
+            4: <PublishHeader />,
+          }[currentStep] || undefined
+        }
+      >
+        {currentStep === 1 && <AddImage />}
+        {currentStep === 2 && <CropImage />}
+        {currentStep === 3 && <FiltersContainer />}
+      </Modal>
+    </>
   )
 }

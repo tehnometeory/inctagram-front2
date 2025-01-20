@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from 'react'
 
-import { CancelPostModal, CreatePost } from '@/features'
+import { CreatePost } from '@/features'
 import { RoutesApp, useAppSelector, useNRouter } from '@/shared'
 import { HeaderApp } from '@/widgets'
 
@@ -25,7 +25,6 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <HeaderApp isAuth={isAuth} />
       {children}
       <CreatePost />
-      <CancelPostModal />
     </>
   )
 }
