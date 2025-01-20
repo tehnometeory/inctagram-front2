@@ -23,6 +23,7 @@ export type CreatePostState = {
   currentPost: Draft
   draft: Nullable<Draft>
   isAspectControlOpen: boolean
+  isModalCancelPostOpen: boolean
   isModalOpen: boolean
   isThumbnailsControlOpen: boolean
   isZoomControlOpen: boolean

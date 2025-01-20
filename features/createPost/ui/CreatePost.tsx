@@ -8,7 +8,7 @@ import { Modal } from '@rambo-react/ui-meteors'
 
 import s from './CreatePost.module.scss'
 
-import { hideModal, resetCurrentPost } from '../model'
+import { hideModal, resetCurrentPost, showCancelPostModal } from '../model'
 import { AddImage, CropImage, FiltersContainer } from './steps'
 
 export const CreatePost = () => {
@@ -22,6 +22,9 @@ export const CreatePost = () => {
     dispatch(resetCurrentPost())
     dispatch(hideModal())
   }
+  const openCancelPostCreationModal = () => {
+    dispatch(showCancelPostModal())
+  }
 
   if (!isModalOpen) {
     return null
@@ -31,8 +34,8 @@ export const CreatePost = () => {
     <Modal
       className={s.modal}
       isOpen={isModalOpen}
-      onClose={closeHandler}
-      onCloseOut={closeHandler}
+      onClose={currentStep === 1 ? closeHandler : undefined}
+      onCloseOut={currentStep > 1 ? openCancelPostCreationModal : undefined}
       {...(currentStep === 1 && { title: 'Add Photo' })}
       customHeader={
         {
