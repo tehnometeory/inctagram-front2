@@ -16,6 +16,7 @@
 .rightButton {
   @include typography.H3;
 
+  user-select: none;
   padding: 0;
 }
 

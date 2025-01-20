@@ -1,4 +1,4 @@
-import { nextStep, prevStep } from '@/features/createPost/model'
+import { nextStep, resetCurrentPost } from '@/features/createPost/model'
 import { useAppDispatch } from '@/shared'
 import { ArrowIosBack, Button } from '@rambo-react/ui-meteors'
 
@@ -7,7 +7,7 @@ import s from '../customHeaders.module.scss'
 export const CroppingHeader = () => {
   const dispatch = useAppDispatch()
   const goBackHandler = () => {
-    dispatch(prevStep())
+    dispatch(resetCurrentPost())
   }
   const goNextHandler = () => {
     dispatch(nextStep())
@@ -15,7 +15,7 @@ export const CroppingHeader = () => {
 
   return (
     <div className={s.headerContainer}>
-      <button className={s.leftButton} onClick={goBackHandler}>
+      <button className={s.leftButton} onClick={goBackHandler} type={'button'}>
         <ArrowIosBack height={24} width={24} />
       </button>
       <p className={s.title}>Cropping</p>

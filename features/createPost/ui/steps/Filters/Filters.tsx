@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { setActiveFilter } from '@/features/createPost/model'
-import { useAppDispatch } from '@/shared'
+import { useAppDispatch, useAppSelector } from '@/shared'
 import Image from 'next/image'
 
 import styles from './Filters.module.scss'
@@ -24,19 +24,17 @@ type FilterProps = {
 }
 
 export const Filters = ({ activeImage, activeImageIndex }: FilterProps) => {
+  const images = useAppSelector(state => state.createPost.currentPost.images)
+  const id = images[activeImageIndex].id
   const dispatch = useAppDispatch()
-  const onClickHandler = (filterValue: string, activeImageIndex: number) => {
-    dispatch(setActiveFilter({ filter: filterValue, index: activeImageIndex }))
+  const onClickHandler = (filterValue: string) => {
+    dispatch(setActiveFilter({ filter: filterValue, id }))
   }
 
   return (
     <div className={styles.container}>
       {Object.entries(imageFilters).map(([filterName, filterValue]) => (
-        <div
-          className={styles.filter}
-          key={filterName}
-          onClick={() => onClickHandler(filterValue, activeImageIndex)}
-        >
+        <div className={styles.filter} key={filterName} onClick={() => onClickHandler(filterValue)}>
           <Image
             alt={filterName}
             height={108}

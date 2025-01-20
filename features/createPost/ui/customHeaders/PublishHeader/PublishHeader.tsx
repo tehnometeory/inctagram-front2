@@ -15,7 +15,7 @@ export const PublishHeader = () => {
 
   return (
     <div className={s.headerContainer}>
-      <button className={s.leftButton} onClick={goBackHandler}>
+      <button className={s.leftButton} onClick={goBackHandler} type={'button'}>
         <ArrowIosBack height={24} width={24} />
       </button>
       <p className={s.title}>Publication</p>
