@@ -1,4 +1,12 @@
 'use client'
+import ImageTest1 from '@/public/images/test-posts-image/Mask-1.png'
+import ImageTest2 from '@/public/images/test-posts-image/Mask-2.png'
+import ImageTest3 from '@/public/images/test-posts-image/Mask-3.png'
+import ImageTest4 from '@/public/images/test-posts-image/Mask-4.png'
+import ImageTest5 from '@/public/images/test-posts-image/Mask-5.png'
+import ImageTest6 from '@/public/images/test-posts-image/Mask-6.png'
+import ImageTest7 from '@/public/images/test-posts-image/Mask-7.png'
+import ImageTest8 from '@/public/images/test-posts-image/Mask-8.png'
 import { Button } from '@rambo-react/ui-meteors'
 import { clsx } from 'clsx'
 import Image from 'next/image'
@@ -7,6 +15,17 @@ import { useParams } from 'next/navigation'
 import s from './ProfileUser.module.scss'
 
 import { useProfileUserByIdQuery } from './api'
+
+const testDataImagesPost = [
+  ImageTest1,
+  ImageTest2,
+  ImageTest3,
+  ImageTest4,
+  ImageTest5,
+  ImageTest6,
+  ImageTest7,
+  ImageTest8,
+]
 
 export const ProfileUser = () => {
   const { userId } = useParams()
@@ -56,7 +75,19 @@ export const ProfileUser = () => {
           </p>
         </div>
       </div>
-      <div className={s.posts}></div>
+      <div className={s.posts}>
+        {testDataImagesPost.map((image, index) => (
+          <div className={s.post} key={index}>
+            <Image
+              alt={`Post image ${index + 1}`}
+              className={s.imagePost}
+              height={228}
+              src={image}
+              width={234}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
