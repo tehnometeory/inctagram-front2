@@ -1,12 +1,15 @@
 'use client'
 
+import { CroppingHeader } from '@/features/createPost/ui/customHeaders/CroppingHeader/CroppingHeader'
+import { FilterHeader } from '@/features/createPost/ui/customHeaders/FilterHeader/FilterHeader'
+import { PublishHeader } from '@/features/createPost/ui/customHeaders/PublishHeader/PublishHeader'
 import { useAppDispatch, useAppSelector } from '@/shared'
 import { Modal } from '@rambo-react/ui-meteors'
 
 import s from './CreatePost.module.scss'
 
 import { hideModal, resetCurrentPost } from '../model'
-import { AddImage, CropImage } from './steps'
+import { AddImage, CropImage, FiltersContainer } from './steps'
 
 export const CreatePost = () => {
   const {
@@ -24,12 +27,24 @@ export const CreatePost = () => {
     return null
   }
 
-  const title = currentStep === 1 ? 'Add Photo' : 'Cropping'
-
   return (
-    <Modal className={s.modal} isOpen={isModalOpen} onClose={closeHandler} title={title}>
+    <Modal
+      className={s.modal}
+      isOpen={isModalOpen}
+      onClose={closeHandler}
+      onCloseOut={closeHandler}
+      {...(currentStep === 1 && { title: 'Add Photo' })}
+      customHeader={
+        {
+          2: <CroppingHeader />,
+          3: <FilterHeader />,
+          4: <PublishHeader />,
+        }[currentStep] || undefined
+      }
+    >
       {currentStep === 1 && <AddImage />}
       {currentStep === 2 && <CropImage />}
+      {currentStep === 3 && <FiltersContainer />}
     </Modal>
   )
 }

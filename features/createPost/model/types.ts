@@ -1,9 +1,10 @@
 import { Nullable } from '@/shared'
 
 export type ImageDraft = {
+  activeFilter: string
   aspect: number
-  croppedImage: Nullable<string>
-  filteredImage: Nullable<string>
+  croppedImage: string
+  filteredImage: string
   height: number
   id: string
   originalImage: string

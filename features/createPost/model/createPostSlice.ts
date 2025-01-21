@@ -20,11 +20,13 @@ export const createPostSlice = createSlice({
   name: 'createPost',
   reducers: {
     addImage(state, action: PayloadAction<AddImagePayload>) {
+      const { originalImage } = action.payload
       const image = {
         ...action.payload,
+        activeFilter: 'none',
         aspect: 1,
-        croppedImage: null,
-        filteredImage: null,
+        croppedImage: originalImage,
+        filteredImage: '',
         zoom: 1,
       }
 
@@ -53,13 +55,16 @@ export const createPostSlice = createSlice({
       const imageToRemove = state.currentPost.images.find(image => image.id === action.payload)
 
       if (imageToRemove) {
-        const { croppedImage, originalImage } = imageToRemove
+        const { croppedImage, filteredImage, originalImage } = imageToRemove
 
         if (originalImage) {
           URL.revokeObjectURL(originalImage)
         }
         if (croppedImage) {
           URL.revokeObjectURL(croppedImage)
+        }
+        if (filteredImage) {
+          URL.revokeObjectURL(filteredImage)
         }
         state.currentPost.images = state.currentPost.images.filter(
           image => image.id !== action.payload
@@ -86,6 +91,13 @@ export const createPostSlice = createSlice({
     },
     saveDraft(state) {
       state.draft = { ...state.currentPost }
+    },
+    setActiveFilter(state, action: PayloadAction<{ filter: string; id: string }>) {
+      const { filter, id } = action.payload
+
+      state.currentPost.images = state.currentPost.images.map(image =>
+        image.id === id ? { ...image, activeFilter: filter } : image
+      )
     },
     setAspect(state, action: PayloadAction<{ aspect: number; id: string }>) {
       const { aspect, id } = action.payload
@@ -120,6 +132,13 @@ export const createPostSlice = createSlice({
         image.id === id ? { ...image, croppedImage: croppedImage } : image
       )
     },
+    updateFilteredImage(state, action: PayloadAction<{ filteredImage: string; id: string }>) {
+      const { filteredImage, id } = action.payload
+
+      state.currentPost.images = state.currentPost.images.map(image =>
+        image.id === id ? { ...image, filteredImage: filteredImage } : image
+      )
+    },
   },
 })
 
@@ -133,6 +152,7 @@ export const {
   removeImage,
   resetCurrentPost,
   saveDraft,
+  setActiveFilter,
   setAspect,
   setAspectControl,
   setThumbnailsControl,
@@ -140,6 +160,7 @@ export const {
   setZoomControl,
   showModal,
   updateCroppedImage,
+  updateFilteredImage,
 } = createPostSlice.actions
 
 export const createPostReducer = createPostSlice.reducer
