@@ -10,6 +10,7 @@ const initialState: CreatePostState = {
   },
   draft: null,
   isAspectControlOpen: false,
+  isModalCancelPostOpen: false,
   isModalOpen: false,
   isThumbnailsControlOpen: false,
   isZoomControlOpen: false,
@@ -34,6 +35,9 @@ export const createPostSlice = createSlice({
     },
     clearDraft(state) {
       state.draft = null
+    },
+    hideCancelPostModal(state) {
+      state.isModalCancelPostOpen = false
     },
     hideModal(state) {
       state.isModalOpen = false
@@ -122,6 +126,9 @@ export const createPostSlice = createSlice({
     setZoomControl(state, action: PayloadAction<boolean>) {
       state.isZoomControlOpen = action.payload
     },
+    showCancelPostModal(state) {
+      state.isModalCancelPostOpen = true
+    },
     showModal(state) {
       state.isModalOpen = true
     },
@@ -145,6 +152,7 @@ export const createPostSlice = createSlice({
 export const {
   addImage,
   clearDraft,
+  hideCancelPostModal,
   hideModal,
   loadDraft,
   nextStep,
@@ -158,6 +166,7 @@ export const {
   setThumbnailsControl,
   setZoom,
   setZoomControl,
+  showCancelPostModal,
   showModal,
   updateCroppedImage,
   updateFilteredImage,
