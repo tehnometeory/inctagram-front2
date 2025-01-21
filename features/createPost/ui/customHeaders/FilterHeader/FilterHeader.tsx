@@ -7,9 +7,7 @@ import s from '../customHeaders.module.scss'
 
 export const FilterHeader = () => {
   const dispatch = useAppDispatch()
-  const {
-    currentPost: { images },
-  } = useAppSelector(state => state.createPost)
+  const images = useAppSelector(state => state.createPost.currentPost.images)
   const croppedImages = images.map(image => image.croppedImage)
 
   const filters = images.map(image => image.activeFilter)

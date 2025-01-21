@@ -9,9 +9,7 @@ import { Filters } from './Filters'
 
 export const FiltersContainer = () => {
   {
-    const {
-      currentPost: { images },
-    } = useAppSelector(state => state.createPost)
+    const images = useAppSelector(state => state.createPost.currentPost.images)
     const croppedImages = images.map(image => image.croppedImage)
     const [activeImageIndex, setActiveImageIndex] = useState(0)
 
