@@ -1,6 +1,7 @@
 import { appReducer, authReducer } from '@/entities'
 import {
   authApi,
+  createPostReducer,
   expiredEmailLinkApi,
   forgotPasswordApi,
   logoutApi,
@@ -27,6 +28,7 @@ export const store = configureStore({
     app: appReducer,
     auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
+    createPost: createPostReducer,
     [expiredEmailLinkApi.reducerPath]: expiredEmailLinkApi.reducer,
     [forgotPasswordApi.reducerPath]: forgotPasswordApi.reducer,
     [logoutApi.reducerPath]: logoutApi.reducer,

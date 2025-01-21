@@ -1,6 +1,7 @@
 export * from './appAlert'
 export * from './authInitializer'
 export * from './confirmedEmail'
+export * from './createPost'
 export * from './expiredEmailLink'
 export * from './forgotPassword'
 export * from './logout'
