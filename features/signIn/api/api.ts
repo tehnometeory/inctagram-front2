@@ -1,29 +1,20 @@
-import { BASE_URL_API } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
 
 import { LoginBody, SignInResponse } from './types'
 
-export const signInApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-    credentials: 'include',
-    prepareHeaders: headers => {
-      headers.set('User-Agent', navigator.userAgent)
-
-      return headers
-    },
-  }),
-
+export const signInApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation<SignInResponse, LoginBody>({
       query: body => ({
         body,
+        headers: {
+          'User-Agent': navigator.userAgent,
+        },
         method: 'POST',
         url: 'auth/login',
       }),
     }),
   }),
-  reducerPath: 'signInApi',
 })
 
 export const { useLoginMutation } = signInApi
