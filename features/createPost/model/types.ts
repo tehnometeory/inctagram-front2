@@ -1,9 +1,10 @@
 import { Nullable } from '@/shared'
 
 export type ImageDraft = {
+  activeFilter: string
   aspect: number
-  croppedImage: Nullable<string>
-  filteredImage: Nullable<string>
+  croppedImage: string
+  filteredImage: string
   height: number
   id: string
   originalImage: string
@@ -22,6 +23,7 @@ export type CreatePostState = {
   currentPost: Draft
   draft: Nullable<Draft>
   isAspectControlOpen: boolean
+  isModalCancelPostOpen: boolean
   isModalOpen: boolean
   isThumbnailsControlOpen: boolean
   isZoomControlOpen: boolean
