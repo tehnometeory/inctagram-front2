@@ -17,7 +17,7 @@ type Props = {
 
 export const HeaderApp = ({ isAuth = false }: Props) => {
   const { logInHandler, signUpHandler, ...actions } = useHeaderActions()
-  const { handleCloseModal, handleConfirmLogout, setShowModal, showModal } = useLogout()
+  const { handleCloseModal, handleConfirmLogout, setShowModalLogout, showModalLogout } = useLogout()
 
   return (
     <>
@@ -45,11 +45,15 @@ export const HeaderApp = ({ isAuth = false }: Props) => {
           {
             icon: <LogOutOutline height={24} width={24} />,
             label: 'Log Out',
-            onClick: () => setShowModal(true),
+            onClick: () => setShowModalLogout(true),
           },
         ]}
       />
-      <LogOutModal isOpen={showModal} onClose={handleCloseModal} onConfirm={handleConfirmLogout} />
+      <LogOutModal
+        isOpen={showModalLogout}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmLogout}
+      />
     </>
   )
 }

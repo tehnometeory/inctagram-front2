@@ -8,9 +8,9 @@ import { useLogoutMutation } from '../api'
 export const useLogout = () => {
   const [logout, { isLoading }] = useLogoutMutation()
   const dispatch = useAppDispatch()
-  const [showModal, setShowModal] = useState(false)
+  const [showModalLogout, setShowModalLogout] = useState(false)
 
-  const handleCloseModal = () => setShowModal(false)
+  const handleCloseModal = () => setShowModalLogout(false)
   const handleConfirmLogout = async () => {
     try {
       await logout({}).unwrap()
@@ -28,8 +28,8 @@ export const useLogout = () => {
     handleCloseModal,
     handleConfirmLogout,
     isLoading,
-    logoutItem: { itemCallback: () => setShowModal(true), name: 'Log Out' },
-    setShowModal,
-    showModal,
+    logoutItem: { itemCallback: () => setShowModalLogout(true), name: 'Log Out' },
+    setShowModalLogout,
+    showModalLogout,
   }
 }
