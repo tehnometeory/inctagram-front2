@@ -1,8 +1,11 @@
 'use client'
 
+import { SelectedPost } from '@/features'
+
 export default function HomePage() {
   return (
     <div>
+      <SelectedPost />
       <h3>Home Page!!</h3>
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem aperiam quaerat
       soluta quidem est dicta nesciunt, distinctio accusantium eveniet asperiores ab, officiis
