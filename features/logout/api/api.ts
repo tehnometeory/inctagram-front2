@@ -5,10 +5,6 @@ export const logoutApi = baseApi.injectEndpoints({
     logout: builder.mutation({
       query: () => {
         return {
-          credentials: 'include',
-          headers: {
-            'User-Agent': navigator.userAgent,
-          },
           method: 'POST',
           url: 'auth/logout',
         }

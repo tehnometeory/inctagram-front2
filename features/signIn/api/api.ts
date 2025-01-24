@@ -7,9 +7,6 @@ export const signInApi = baseApi.injectEndpoints({
     login: builder.mutation<SignInResponse, LoginBody>({
       query: body => ({
         body,
-        headers: {
-          'User-Agent': navigator.userAgent,
-        },
         method: 'POST',
         url: 'auth/login',
       }),
