@@ -1,0 +1,47 @@
+@use '@rambo-react/ui-meteors/dist/typography' as typography;
+
+.Modal {
+  min-width: 972px;
+}
+
+.container {
+  display: flex;
+}
+
+.customHeader {
+  display: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 24px;
+
+  border-bottom: 1px solid var(--color-dark-100);
+}
+
+.userName {
+  @include typography.H3;
+}
+
+.descriptionAndCommentsBlock {
+  padding: 20px 24px 8px;
+}
+
+.description {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.descriptionUserName {
+  @include typography.Bold_text_14;
+}
+
+.time {
+  @include typography.Small_text;
+
+  color: var(--color-light-900);
+}

@@ -24,5 +24,6 @@ export type Post = {
 
 export type SelectedPostState = {
   isEditing: boolean
+  isModalOpen: boolean
   post: Nullable<Post>
 }
