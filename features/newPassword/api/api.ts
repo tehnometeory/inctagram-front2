@@ -1,12 +1,8 @@
-import { BASE_URL_API } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
 
 import { SetPasswordArg, SetPasswordResponse } from './types'
 
-export const setPasswordApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-  }),
+export const setPasswordApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     setPassword: builder.mutation<SetPasswordResponse, SetPasswordArg>({
       query: body => {
@@ -18,7 +14,6 @@ export const setPasswordApi = createApi({
       },
     }),
   }),
-  reducerPath: 'setPasswordApi',
 })
 
 export const { useSetPasswordMutation } = setPasswordApi

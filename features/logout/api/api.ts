@@ -1,16 +1,6 @@
-import { BASE_URL_API } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
 
-export const logoutApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-    credentials: 'include',
-    prepareHeaders: headers => {
-      headers.set('User-Agent', navigator.userAgent)
-
-      return headers
-    },
-  }),
+export const logoutApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     logout: builder.mutation({
       query: () => {
@@ -21,7 +11,6 @@ export const logoutApi = createApi({
       },
     }),
   }),
-  reducerPath: 'logoutApi',
 })
 
 export const { useLogoutMutation } = logoutApi

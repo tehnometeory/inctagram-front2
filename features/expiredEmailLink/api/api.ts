@@ -1,14 +1,11 @@
-import { BASE_URL_API, ErrorsMessagesResponse } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
+import { ErrorsMessagesResponse } from '@/shared'
 
 export type ResendConfirmationCodeArgs = {
   email: string
 }
 
-export const expiredEmailLinkApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-  }),
+export const expiredEmailLinkApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     resendConfirmationCode: builder.mutation<
       ErrorsMessagesResponse | void,
@@ -21,7 +18,6 @@ export const expiredEmailLinkApi = createApi({
       }),
     }),
   }),
-  reducerPath: 'expiredEmailLinkApi',
 })
 
 export const { useResendConfirmationCodeMutation } = expiredEmailLinkApi

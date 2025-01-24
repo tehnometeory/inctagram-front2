@@ -1,25 +1,18 @@
-import { BASE_URL_API, ResponseWithAccessToken } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
+import { ResponseWithAccessToken } from '@/shared'
 
-export const authApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-    credentials: 'include',
-    prepareHeaders: headers => {
-      headers.set('User-Agent', navigator.userAgent)
-
-      return headers
-    },
-  }),
+export const authApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     refreshTokens: builder.mutation<ResponseWithAccessToken, void>({
       query: () => ({
+        headers: {
+          'User-Agent': navigator.userAgent,
+        },
         method: 'POST',
         url: 'auth/refresh-tokens',
       }),
     }),
   }),
-  reducerPath: 'authApi',
 })
 
 export const { useRefreshTokensMutation } = authApi
