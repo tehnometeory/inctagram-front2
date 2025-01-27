@@ -36,6 +36,7 @@ export const createPostSlice = createSlice({
     clearDraft(state) {
       state.draft = null
     },
+
     hideCancelPostModal(state) {
       state.isModalCancelPostOpen = false
     },
@@ -139,6 +140,9 @@ export const createPostSlice = createSlice({
         image.id === id ? { ...image, croppedImage: croppedImage } : image
       )
     },
+    updateDescription(state, action: PayloadAction<{ newDescription: string }>) {
+      state.currentPost.description = action.payload.newDescription
+    },
     updateFilteredImage(state, action: PayloadAction<{ filteredImage: string; id: string }>) {
       const { filteredImage, id } = action.payload
 
@@ -169,6 +173,7 @@ export const {
   showCancelPostModal,
   showModal,
   updateCroppedImage,
+  updateDescription,
   updateFilteredImage,
 } = createPostSlice.actions
 

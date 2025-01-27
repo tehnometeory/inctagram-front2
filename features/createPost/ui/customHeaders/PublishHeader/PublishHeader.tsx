@@ -1,17 +1,10 @@
-import { nextStep, prevStep } from '@/features/createPost/model'
-import { useAppDispatch } from '@/shared'
+import { usePublishPost } from '@/features/createPost/hooks/usePublishPost'
 import { ArrowIosBack, Button } from '@rambo-react/ui-meteors'
 
 import s from '../customHeaders.module.scss'
 
 export const PublishHeader = () => {
-  const dispatch = useAppDispatch()
-  const goBackHandler = () => {
-    dispatch(prevStep())
-  }
-  const goNextHandler = () => {
-    dispatch(nextStep())
-  }
+  const { goBackHandler, publishPostHandler } = usePublishPost()
 
   return (
     <div className={s.headerContainer}>
@@ -19,7 +12,7 @@ export const PublishHeader = () => {
         <ArrowIosBack height={24} width={24} />
       </button>
       <p className={s.title}>Publication</p>
-      <Button className={s.rightButton} onClick={goNextHandler} variant={'text'}>
+      <Button className={s.rightButton} onClick={publishPostHandler} variant={'text'}>
         Publish
       </Button>
     </div>
