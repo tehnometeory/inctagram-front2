@@ -1,13 +1,12 @@
 import React, { ChangeEvent } from 'react'
 
 import { updateDescription } from '@/features/createPost/model'
+import ava from '@/public/images/test_userAvatar.png'
 import { useAppDispatch, useAppSelector } from '@/shared'
 import { TextArea } from '@rambo-react/ui-meteors'
 import Image from 'next/image'
 
 import s from './Publication.module.scss'
-
-import ava from '../../../../../public/images/image 1.png'
 
 export const PublicationPost = () => {
   const description = useAppSelector(state => state.createPost.currentPost.description) || ''

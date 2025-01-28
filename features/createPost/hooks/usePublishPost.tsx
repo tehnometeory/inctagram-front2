@@ -39,11 +39,11 @@ export const usePublishPost = () => {
 
       dispatch(resetCurrentPost())
       dispatch(hideModal())
-      dispatch(setAlert({ message: 'Пост опубликован:', type: 'accepted' }))
+      dispatch(setAlert({ message: 'The post has been published:', type: 'accepted' }))
     } catch (error) {
       dispatch(
         setAlert({
-          message: `ошибка при публикации поста:`,
+          message: `Error publishing post:`,
           type: 'error',
         })
       )
