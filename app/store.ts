@@ -9,6 +9,7 @@ import {
   signInApi,
   signUpApi,
 } from '@/features'
+import { publishPostApi } from '@/features/createPost/api'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore({
@@ -20,7 +21,8 @@ export const store = configureStore({
       forgotPasswordApi.middleware,
       expiredEmailLinkApi.middleware,
       signInApi.middleware,
-      logoutApi.middleware
+      logoutApi.middleware,
+      publishPostApi.middleware
     ),
   reducer: {
     app: appReducer,
@@ -30,6 +32,7 @@ export const store = configureStore({
     [expiredEmailLinkApi.reducerPath]: expiredEmailLinkApi.reducer,
     [forgotPasswordApi.reducerPath]: forgotPasswordApi.reducer,
     [logoutApi.reducerPath]: logoutApi.reducer,
+    [publishPostApi.reducerPath]: publishPostApi.reducer,
     [setPasswordApi.reducerPath]: setPasswordApi.reducer,
     [signInApi.reducerPath]: signInApi.reducer,
     [signUpApi.reducerPath]: signUpApi.reducer,

@@ -1,2 +1,2 @@
-export * from './CancelPostModal'
+export * from './CancelPostModal/CancelPostModal'
 export * from './CreatePost'

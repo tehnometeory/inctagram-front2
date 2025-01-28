@@ -10,6 +10,7 @@ import s from './CreatePost.module.scss'
 
 import { hideModal, resetCurrentPost, showCancelPostModal } from '../model'
 import { AddImage, CropImage, FiltersContainer } from './steps'
+import { PublicationContainer } from './steps/Publication/PublicationContainer'
 
 export const CreatePost = () => {
   const {
@@ -50,6 +51,7 @@ export const CreatePost = () => {
         {currentStep === 1 && <AddImage />}
         {currentStep === 2 && <CropImage />}
         {currentStep === 3 && <FiltersContainer />}
+        {currentStep === 4 && <PublicationContainer />}
       </Modal>
     </>
   )
