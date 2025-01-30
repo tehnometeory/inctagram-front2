@@ -1,8 +1,9 @@
 'use client'
 
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 
-import { ArrowIosBack, ArrowIosBackOutline, ArrowIosForward } from '@rambo-react/ui-meteors'
+import { useAppSelector } from '@/shared'
+import { ArrowIosBack, ArrowIosForward } from '@rambo-react/ui-meteors'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -16,35 +17,33 @@ import styles from './Carousel.module.scss'
 
 type Props = {
   activeSlide?: number
-  filters?: string[]
   images: string[]
-  setActiveSlide?: (index: number) => void
+  passActiveSlide?: (index: number) => void
   type: 'Black' | 'Gray'
 }
 
-export const Carousel = ({ activeSlide = 0, filters, images, setActiveSlide, type }: Props) => {
+export const Carousel = ({ activeSlide = 0, images, passActiveSlide, type }: Props) => {
   const [isBeginning, setIsBeginning] = useState(true)
   const [isEnd, setIsEnd] = useState(false)
 
-  const filtersToUse = useMemo(
-    () => filters ?? new Array(images.length).fill('Normal'),
-    [filters, images.length]
+  const activeFilter = useAppSelector(
+    state => state.createPost.currentPost.images[activeSlide]?.activeFilter
   )
 
   const handleSlideChange = useCallback(
     (swiper: any) => {
-      if (setActiveSlide) {
-        setActiveSlide(swiper.activeIndex)
+      if (passActiveSlide) {
+        passActiveSlide(swiper.activeIndex)
       }
     },
-    [setActiveSlide]
+    [passActiveSlide]
   )
+  const shouldShowNavigation = images.length > 1
 
   return (
     <div className={styles.container}>
       <Swiper
-        initialSlide={activeSlide}
-        loop={false}
+        loop={type === 'Gray'}
         modules={[Navigation, Pagination]}
         navigation={{
           nextEl: `.${styles[`swiperButtonNext${type}`]}`,
@@ -55,13 +54,14 @@ export const Carousel = ({ activeSlide = 0, filters, images, setActiveSlide, typ
           setIsEnd(swiper.isEnd)
           handleSlideChange(swiper)
         }}
-        pagination={{
-          bulletActiveClass: 'swiper-pagination-button-active',
-          bulletClass: 'swiper-pagination-button',
-          clickable: true,
-          el: `.${styles[`swiperPagination${type}`]}`,
-          type: 'bullets',
-        }}
+        pagination={
+          shouldShowNavigation && {
+            bulletActiveClass: 'swiper-pagination-button-active',
+            bulletClass: 'swiper-pagination-button',
+            el: `.${styles[`swiperPagination${type}`]}`,
+            type: 'bullets',
+          }
+        }
         slidesPerView={1}
         spaceBetween={50}
       >
@@ -73,47 +73,48 @@ export const Carousel = ({ activeSlide = 0, filters, images, setActiveSlide, typ
                 fill
                 loading={index === 0 ? 'eager' : 'lazy'}
                 priority={index === 0}
-                sizes={'(max-width: 490px) 100vw, 490px'}
+                sizes={'(max-width: 490px), 490px'}
                 src={src}
-                style={{ filter: filtersToUse[index], objectFit: 'cover' }}
+                style={{
+                  filter: index === activeSlide ? activeFilter : 'none',
+                  objectFit: 'cover',
+                }}
               />
             </div>
           </SwiperSlide>
         ))}
+        {shouldShowNavigation && (
+          <>
+            <div
+              className={clsx(
+                styles[`swiperButtonNext${type}`],
+                type === 'Black' && isEnd && styles.hiddenButton
+              )}
+            >
+              <ArrowIosForward
+                className={styles[`swiperNextIcon${type}`]}
+                fill={'white'}
+                height={type === 'Black' ? 24 : 48}
+                width={type === 'Black' ? 24 : 48}
+              />
+            </div>
+            <div
+              className={clsx(
+                styles[`swiperButtonPrev${type}`],
+                type === 'Black' && isBeginning && styles.hiddenButton
+              )}
+            >
+              <ArrowIosBack
+                className={styles[`swiperPrevIcon${type}`]}
+                fill={'white'}
+                height={type === 'Black' ? 24 : 48}
+                width={type === 'Black' ? 24 : 48}
+              />
+            </div>
 
-        <div className={clsx(styles[`swiperButtonNext${type}`], { [styles.hiddenButton]: isEnd })}>
-          <ArrowIosForward
-            className={styles[`swiperNextIcon${type}`]}
-            fill={'white'}
-            height={type === 'Black' ? 24 : 48}
-            width={type === 'Black' ? 24 : 48}
-          />
-        </div>
-
-        <div
-          className={clsx(styles[`swiperButtonPrev${type}`], {
-            [styles.hiddenButton]: isBeginning,
-          })}
-        >
-          {type === 'Black' && (
-            <ArrowIosBack
-              className={styles[`swiperPrevIcon${type}`]}
-              fill={'white'}
-              height={24}
-              width={24}
-            />
-          )}
-          {type === 'Gray' && (
-            <ArrowIosBackOutline
-              className={styles[`swiperPrevIcon${type}`]}
-              fill={'white'}
-              height={48}
-              width={48}
-            />
-          )}
-        </div>
-
-        <div className={styles[`swiperPagination${type}`]} />
+            <div className={styles[`swiperPagination${type}`]} />
+          </>
+        )}
       </Swiper>
     </div>
   )
