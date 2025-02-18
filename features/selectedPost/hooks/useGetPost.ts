@@ -11,7 +11,6 @@ export const useGetPost = (postId: string) => {
   const { data: post, error, isLoading, refetch } = useGetPostByIdQuery(postId)
 
   useEffect(() => {
-    debugger
     if (!post) {
       return
     }
