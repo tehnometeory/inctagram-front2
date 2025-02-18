@@ -1,33 +1,103 @@
-import { Carousel, useAppSelector } from '@/shared'
-import { Button, Modal, MoreHorizontalOutline } from '@rambo-react/ui-meteors'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { Carousel, useAppDispatch, useAppSelector } from '@/shared'
+import {
+  Bookmark,
+  BookmarkOutline,
+  Button,
+  EditOutline,
+  Heart,
+  HeartOutline,
+  Modal,
+  MoreHorizontalOutline,
+  PaperPlaneOutline,
+  TextArea,
+  TrashOutline,
+} from '@rambo-react/ui-meteors'
+import clsx from 'clsx'
 
 import s from './SelectedPost.module.scss'
 
+import { hidePostModal } from '..'
 import { convertToRelativeTime } from '../utils/convertToRelativeTime'
+import { getDateParts } from '../utils/getDateParts'
 
 export const SelectedPost = () => {
-  const { isModalOpen, post } = useAppSelector(state => state.selectedPost)
+  const [liked, setLiked] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [openedMenu, setOpenedMenu] = useState(false)
 
-  const images = post?.photos.map(photo => photo.url) ?? []
+  const dispatch = useAppDispatch()
+
+  const post = useAppSelector(state => state.selectedPost.post)
+
+  const isModalOpen = useAppSelector(state => state.selectedPost.isModalOpen)
+
+  const images = post?.photos?.map(photo => photo.url) ?? []
+
+  const menuRef = useRef<HTMLDivElement | null>(null)
+
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenedMenu(false)
+      }
+    },
+    [setOpenedMenu]
+  )
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isModalOpen, handleClickOutside])
+
+  const handleCloseOut = () => {
+    dispatch(hidePostModal())
+  }
 
   if (post === null || !isModalOpen) {
     return null
   }
 
   const timeAgo = convertToRelativeTime(post.createdAt)
+  const { day, month, year } = getDateParts(post.createdAt)
 
   return (
-    <Modal className={s.Modal} isOpen={isModalOpen} withoutHeader>
+    <Modal className={s.Modal} isOpen={isModalOpen} onCloseOut={handleCloseOut} withoutHeader>
       <div className={s.container}>
         <Carousel images={images} type={'Gray'} />
-        <div>
+        <div className={s.contentWrapper}>
           <div className={s.header}>
             <div>
               <p className={s.userName}>{post.user.username}</p>
             </div>
-            <Button variant={'text'}>
-              <MoreHorizontalOutline fill={'var(--color-accent-500'} height={24} width={24} />
-            </Button>
+            <div className={s.menu}>
+              <Button
+                autoFocus={false}
+                className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
+                onClick={() => setOpenedMenu(!openedMenu)}
+                variant={'text'}
+              >
+                <MoreHorizontalOutline height={24} width={24} />
+              </Button>
+              {openedMenu && (
+                <div className={s.editAndDeletePostBlock} ref={menuRef}>
+                  <Button className={s.editAndDeletePostBtn} variant={'text'}>
+                    <EditOutline height={24} width={24} />
+                    <p>Edit Post</p>
+                  </Button>
+                  <Button className={s.editAndDeletePostBtn} variant={'text'}>
+                    <TrashOutline height={24} width={24} />
+                    <p>Delete Post</p>
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
           <div className={s.descriptionAndCommentsBlock}>
             <div className={s.descriptionBlock}>
@@ -38,6 +108,49 @@ export const SelectedPost = () => {
               <p className={s.time}>{timeAgo}</p>
             </div>
             <div className={s.commentsBlock}></div>
+          </div>
+          <div className={s.likesAndCommentsWrapper}>
+            <div className={s.likesAndRepostsBlock}>
+              <div className={s.icons}>
+                <div className={s.leftIcons}>
+                  <div className={s.like} onClick={() => setLiked(prev => !prev)}>
+                    {liked ? (
+                      <Heart fill={'var( --color-danger-500)'} height={24} width={24} />
+                    ) : (
+                      <HeartOutline fill={'white'} height={24} width={24} />
+                    )}
+                  </div>
+
+                  <PaperPlaneOutline fill={'white'} height={24} width={24} />
+                </div>
+                <div className={s.save} onClick={() => setSaved(prev => !prev)}>
+                  {saved ? (
+                    <Bookmark fill={'var( --color-accent-700)'} height={24} width={24} />
+                  ) : (
+                    <BookmarkOutline fill={'white'} height={24} width={24} />
+                  )}
+                </div>
+              </div>
+              <div className={s.likes}>
+                <p className={s.likeCount}>
+                  2243 &quot;<span>Like</span>&quot;
+                </p>
+                <p className={s.postDate}>
+                  {month} {day}, {year}
+                </p>
+              </div>
+            </div>
+            <div className={s.addCommentBlock}>
+              <TextArea
+                className={s.addCommentArea}
+                label={''}
+                maxLength={500}
+                placeholder={'Add a Comment...'}
+              />
+              <Button className={s.publishBtn} variant={'text'}>
+                Publish
+              </Button>
+            </div>
           </div>
         </div>
       </div>

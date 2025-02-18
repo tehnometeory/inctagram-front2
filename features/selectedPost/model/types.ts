@@ -1,4 +1,6 @@
-import { Nullable } from '@/shared'
+import { ErrorsMessagesResponse, Nullable } from '@/shared'
+
+export type PostResponse<T> = ErrorsMessagesResponse | T
 
 type Photo = {
   createdAt: string

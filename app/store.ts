@@ -4,6 +4,7 @@ import {
   createPostReducer,
   expiredEmailLinkApi,
   forgotPasswordApi,
+  getPostApi,
   logoutApi,
   selectedPostReducer,
   setPasswordApi,
@@ -21,7 +22,8 @@ export const store = configureStore({
       forgotPasswordApi.middleware,
       expiredEmailLinkApi.middleware,
       signInApi.middleware,
-      logoutApi.middleware
+      logoutApi.middleware,
+      getPostApi.middleware
     ),
   reducer: {
     app: appReducer,
@@ -30,6 +32,7 @@ export const store = configureStore({
     createPost: createPostReducer,
     [expiredEmailLinkApi.reducerPath]: expiredEmailLinkApi.reducer,
     [forgotPasswordApi.reducerPath]: forgotPasswordApi.reducer,
+    [getPostApi.reducerPath]: getPostApi.reducer,
     [logoutApi.reducerPath]: logoutApi.reducer,
     selectedPost: selectedPostReducer,
     [setPasswordApi.reducerPath]: setPasswordApi.reducer,

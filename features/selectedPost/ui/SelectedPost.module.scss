@@ -6,6 +6,13 @@
 
 .container {
   display: flex;
+  justify-content: space-between;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .customHeader {
@@ -14,6 +21,7 @@
 
 .header {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
 
@@ -26,8 +34,94 @@
   @include typography.H3;
 }
 
+.menu {
+  position: relative;
+}
+
+.menuBtn {
+  padding: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  :hover,
+  :focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  svg {
+    fill: var(--color-light-100);
+  }
+
+  &:hover {
+    svg {
+      fill: var(--color-accent-100);
+    }
+  }
+}
+
+.openedMenu {
+  svg {
+    fill: var(--color-accent-500);
+  }
+}
+
+.editAndDeletePostBlock {
+  position: absolute;
+  top: 30px;
+  right: 0;
+
+  width: 137px;
+  height: 85px;
+  padding: 12px;
+
+  background-color: var(--color-dark-500);
+}
+
+.icons {
+  display: flex;
+  justify-content: space-between;
+  transition: fill 0.2s ease;
+
+  svg {
+    cursor: pointer;
+  }
+}
+
+.editAndDeletePostBtn {
+  padding: 0 0 12px;
+  color: var(--color-light-100);
+
+  @include typography.Regular_text_14;
+
+  svg {
+    fill: var(--color-light-100);
+  }
+
+  &:hover {
+    svg {
+      fill: var(--color-accent-100);
+    }
+  }
+
+  &:focus {
+    color: var(--color-accent-300);
+
+    svg {
+      fill: var(--color-accent-300);
+    }
+  }
+
+  p {
+    margin: 0 0 0 12px;
+  }
+}
+
 .descriptionAndCommentsBlock {
-  padding: 20px 24px 8px;
+  flex-shrink: 0;
+  padding: 20px 24px 6px;
+  border-bottom: 1px solid var(--color-dark-100);
 }
 
 .description {
@@ -40,8 +134,80 @@
   @include typography.Bold_text_14;
 }
 
-.time {
+.time,
+.postDate {
+  margin: 5px 0 8px;
+
   @include typography.Small_text;
 
   color: var(--color-light-900);
+}
+
+.likesAndCommentsWrapper {
+  margin-top: auto;
+}
+
+.likesAndRepostsBlock {
+  padding: 12px 24px 6px;
+  border-bottom: 1px solid var(--color-dark-100);
+}
+
+.leftIcons {
+  display: flex;
+}
+
+.like {
+  margin-right: 24px;
+}
+
+.likes {
+  margin-top: 19px;
+}
+
+.likeCount {
+  @include typography.Regular_text_14;
+
+  margin: 0;
+
+  span {
+    @include typography.Bold_text_14;
+  }
+}
+
+.addCommentBlock {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+}
+
+.addCommentArea {
+  width: 328px;
+  height: 40px;
+  min-height: 40px;
+  padding-left: 0;
+
+  color: var(--color-light-900);
+
+  background-color: var(--color-dark-300);
+  border: none;
+  outline: none !important;
+
+  &:focus,
+  &:active {
+    border: none !important;
+    outline: none !important;
+  }
+
+  &:hover:not(:active) {
+    color: var(--color-light-100);
+  }
+
+  ::placeholder {
+    @include typography.Regular_text_14;
+  }
+}
+
+.publishBtn {
+  padding: 0;
 }
