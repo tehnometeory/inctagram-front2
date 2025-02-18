@@ -9,23 +9,21 @@ type Props = {
 export const RegisteredUsers = ({ usersCount }: Props) => {
   const numbersArray = usersCount.toString().split('')
 
-  if (numbersArray.length < 6) {
-    while (numbersArray.length !== 6) {
-      numbersArray.unshift('0')
-    }
+  while (numbersArray.length !== 6) {
+    numbersArray.unshift('0')
   }
-
-  const mappedUsersCount = numbersArray.map((num, i) => (
-    <Fragment key={`${num}${i}`}>
-      {num}
-      {i !== numbersArray.length - 1 && <div className={s.separator} />}
-    </Fragment>
-  ))
 
   return (
     <div className={s.registeredUsers}>
       Registered users:
-      <div className={s.counter}>{mappedUsersCount}</div>
+      <div className={s.counter}>
+        {numbersArray.map((num, i) => (
+          <Fragment key={`${num}${i}`}>
+            {num}
+            {i !== numbersArray.length - 1 && <div className={s.separator} />}
+          </Fragment>
+        ))}
+      </div>
     </div>
   )
 }

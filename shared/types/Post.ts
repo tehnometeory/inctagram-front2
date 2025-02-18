@@ -2,16 +2,17 @@ export type Post = {
   createdAt: string
   description: string
   id: string
-  photos: {
-    createdAt: string
-    id: string
-    postId: string
-    url: string
-  }
-  privateStatus: string
+  photos: Photo[]
+  privateStatus: boolean
   updatedAt: string
   user: {
     username: string
   }
   userId: string
+}
+
+export type Photo = {
+  createdAt: string
+  id: string
+  url: string
 }

@@ -2,38 +2,46 @@
 
 import { useState } from 'react'
 
+import { Carousel, Photo } from '@/shared'
 import clsx from 'clsx'
 import Image from 'next/image'
 
 import s from './Post.module.scss'
 
-// import { Carousel } from '../Carousel'
-
 type Props = {
-  avatar: string
+  avatar?: string
   description: string
-  images: string[]
+  photos: Photo[]
   publicationTime: string
   username: string
 }
 
-export const Post = ({ avatar, description, images, publicationTime, username }: Props) => {
+export const Post = ({ avatar, description, photos, publicationTime, username }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
   const onShowMoreClickHandler = () => setIsExpanded(!isExpanded)
 
+  const photosSrc = photos.length === 1 ? photos[0].url : photos.map(photo => photo.url)
+
   return (
     <div className={s.publicPagePost}>
       <div className={clsx(s.postImages, isExpanded && s.hided)}>
-        {/* {images.length === 1 ? ( */}
-        <Image alt={'avatar'} height={240} priority src={images[0]} width={240} />
-        {/*  ) : (
-           <Carousel images={images} type={'Black'} />
-         )} */}
+        {photos.length === 1 ? (
+          <Image alt={'avatar'} height={240} priority src={photosSrc as string} width={240} />
+        ) : (
+          <Carousel images={photosSrc as string[]} type={'Black'} />
+        )}
       </div>
 
       <div className={s.user}>
-        <Image alt={'avatar'} className={s.avatar} height={36} priority src={avatar} width={36} />
+        <Image
+          alt={'avatar'}
+          className={s.avatar}
+          height={36}
+          priority
+          src={avatar || '/images/avatar-default.webp'}
+          width={36}
+        />
         {username}
       </div>
 
