@@ -22,9 +22,11 @@ export const publishPostApi = createApi({
   }),
   endpoints: builder => ({
     getNewestPosts: builder.query<PostResponse<Publish>, void>({
+      providesTags: ['Post'],
       query: () => 'posts/newest-posts',
     }),
     publishPost: builder.mutation<PostResponse<GetPosts>, FormData>({
+      invalidatesTags: ['Post'],
       query: post => {
         return {
           body: post,
@@ -35,6 +37,7 @@ export const publishPostApi = createApi({
     }),
   }),
   reducerPath: 'publishPostApi',
+  tagTypes: ['Post'],
 })
 
 export const { useGetNewestPostsQuery, usePublishPostMutation } = publishPostApi

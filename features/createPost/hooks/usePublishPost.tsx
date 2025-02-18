@@ -1,23 +1,21 @@
-import { useEffect } from 'react'
-
 import { setAlert } from '@/entities'
 import { useAppDispatch, useAppSelector } from '@/shared'
 
-import { useGetNewestPostsQuery, usePublishPostMutation } from '../api'
+import { usePublishPostMutation } from '../api'
 import { hideModal, prevStep, resetCurrentPost } from '../model'
+import { ImageDraft } from '../model/types'
 
 export const usePublishPost = () => {
   const dispatch = useAppDispatch()
-  const [publishPost, { isSuccess }] = usePublishPostMutation()
-  const { refetch } = useGetNewestPostsQuery()
+  const [publishPost] = usePublishPostMutation()
   const images = useAppSelector(state => state.createPost.currentPost.images)
   const description = useAppSelector(state => state.createPost.currentPost.description)
 
-  useEffect(() => {
-    if (isSuccess) {
-      refetch()
-    }
-  }, [isSuccess, refetch])
+  const convertUrlsToBlobs = (images: ImageDraft[]) => {
+    return Promise.all(
+      images.map(url => fetch(url.originalImage).then(response => response.blob()))
+    )
+  }
 
   const goBackHandler = () => {
     dispatch(prevStep())
@@ -30,13 +28,14 @@ export const usePublishPost = () => {
       formData.append('description', description)
     }
 
-    images.forEach(image => {
-      formData.append('files', image.filteredImage)
+    const blobs = await convertUrlsToBlobs(images)
+
+    blobs.forEach(blob => {
+      formData.append('files', blob)
     })
 
     try {
       await publishPost(formData).unwrap()
-
       dispatch(resetCurrentPost())
       dispatch(hideModal())
       dispatch(setAlert({ message: 'The post has been published:', type: 'accepted' }))
