@@ -1,9 +1,18 @@
 'use client'
 
+import { SelectedPost, useGetPost } from '@/features'
+import { Button } from '@rambo-react/ui-meteors'
+
 export default function HomePage() {
+  const { refreshPostHandler } = useGetPost('2f7588db-b4c2-4e0d-99e8-1f864d20ed46')
+
   return (
     <div>
       <h3>Home Page!!</h3>
+      <Button onClick={refreshPostHandler} variant={'primary'}>
+        Post
+      </Button>
+      <SelectedPost />
       Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem aperiam quaerat
       soluta quidem est dicta nesciunt, distinctio accusantium eveniet asperiores ab, officiis
       reiciendis, repellendus quibusdam similique. Voluptas voluptatum quae sed. Lorem ipsum dolor
