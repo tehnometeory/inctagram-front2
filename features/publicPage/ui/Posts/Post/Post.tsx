@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 
-import { Carousel, Photo } from '@/shared'
+import { Photo } from '@/features'
+import { Carousel } from '@/shared'
 import clsx from 'clsx'
 import Image from 'next/image'
 

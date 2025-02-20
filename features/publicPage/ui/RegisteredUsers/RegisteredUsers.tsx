@@ -1,13 +1,25 @@
 import { Fragment } from 'react'
 
+import { BASE_URL_API } from '@/shared'
+
 import s from './RegisteredUsers.module.scss'
 
-type Props = {
-  usersCount: number
-}
+export const RegisteredUsers = async () => {
+  let isError = false
+  let numbersArray: string[] = []
 
-export const RegisteredUsers = ({ usersCount }: Props) => {
-  const numbersArray = usersCount.toString().split('')
+  try {
+    const response = await fetch(`${BASE_URL_API}users/count`, {
+      next: {
+        revalidate: 60,
+      },
+    })
+    const { usersCount } = (await response.json()) as { usersCount: number }
+
+    numbersArray = usersCount.toString().split('')
+  } catch {
+    isError = true
+  }
 
   while (numbersArray.length !== 6) {
     numbersArray.unshift('0')
