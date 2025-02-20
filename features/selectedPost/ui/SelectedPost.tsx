@@ -47,14 +47,18 @@ export const SelectedPost = () => {
   )
 
   useEffect(() => {
-    if (isModalOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
+    if (openedMenu) {
+      setTimeout(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+      }, 0)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isModalOpen, handleClickOutside])
+  }, [openedMenu, handleClickOutside])
 
   const handleCloseOut = () => {
     dispatch(hidePostModal())
@@ -80,7 +84,9 @@ export const SelectedPost = () => {
               <Button
                 autoFocus={false}
                 className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
-                onClick={() => setOpenedMenu(!openedMenu)}
+                onMouseDown={event => {
+                  setOpenedMenu(!openedMenu)
+                }}
                 variant={'text'}
               >
                 <MoreHorizontalOutline height={24} width={24} />

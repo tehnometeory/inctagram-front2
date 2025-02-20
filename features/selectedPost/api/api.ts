@@ -21,7 +21,6 @@ export const getPostApi = createApi({
   endpoints: builder => ({
     getPostById: builder.query<Post, string>({
       query: id => `posts/${id}`,
-      transformResponse: (response: { code: number; data: Post }) => response.data,
     }),
   }),
 
