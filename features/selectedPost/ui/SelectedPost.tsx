@@ -84,9 +84,6 @@ export const SelectedPost = () => {
               <Button
                 autoFocus={false}
                 className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
-                onMouseDown={event => {
-                  setOpenedMenu(!openedMenu)
-                }}
                 variant={'text'}
               >
                 <MoreHorizontalOutline height={24} width={24} />
