@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { Photo } from '@/features'
-import { Carousel } from '@/shared'
+import { Carousel, getTimeAgo } from '@/shared'
 import clsx from 'clsx'
 import Image from 'next/image'
 
@@ -24,9 +24,11 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
 
   const photosSrc = photos.length === 1 ? photos[0].url : photos.map(photo => photo.url)
 
+  const descriptionEnding = isExpanded ? ' ' : description.length > 100 ? '... ' : ''
+
   return (
     <div className={s.publicPagePost}>
-      <div className={clsx(s.postImages, isExpanded && s.hided)}>
+      <div className={clsx(s.postImages, isExpanded && s.hiden)}>
         {photos.length === 1 ? (
           <Image alt={'avatar'} height={240} priority src={photosSrc as string} width={240} />
         ) : (
@@ -43,17 +45,21 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
           src={avatar || '/images/avatar-default.webp'}
           width={36}
         />
+
         {username}
       </div>
 
-      <span className={s.publicationTime}>{publicationTime}</span>
-      <div>
-        <p className={clsx(s.description, isExpanded && s.expanded)}>{description}</p>
+      <span className={s.publicationTime}>{getTimeAgo(publicationTime)}</span>
 
-        <button className={s.showMore} onClick={onShowMoreClickHandler} type={'button'}>
-          {isExpanded ? 'Hide' : 'Show more'}
-        </button>
-      </div>
+      <p className={s.description}>
+        {`${isExpanded ? description : description.slice(0, 100).trim()}${descriptionEnding}`}
+
+        {description.length > 100 && (
+          <button className={s.showMore} onClick={onShowMoreClickHandler} type={'button'}>
+            {isExpanded ? 'Hide' : 'Show more'}
+          </button>
+        )}
+      </p>
     </div>
   )
 }
