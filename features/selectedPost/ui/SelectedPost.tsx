@@ -26,7 +26,7 @@ export const SelectedPost = () => {
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
   const [openedMenu, setOpenedMenu] = useState(false)
-
+  const isAuthorized = useAppSelector(state => state.auth.isAuthorized)
   const dispatch = useAppDispatch()
 
   const post = useAppSelector(state => state.selectedPost.post)
@@ -37,14 +37,15 @@ export const SelectedPost = () => {
 
   const menuRef = useRef<HTMLDivElement | null>(null)
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenedMenu(false)
-      }
-    },
-    [setOpenedMenu]
-  )
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target as Node) &&
+      !(event.target as HTMLElement).closest(`.${s.menuBtn}`)
+    ) {
+      setOpenedMenu(false)
+    }
+  }, [])
 
   useEffect(() => {
     if (openedMenu) {
@@ -60,11 +61,7 @@ export const SelectedPost = () => {
     }
   }, [openedMenu, handleClickOutside])
 
-  const handleCloseOut = () => {
-    dispatch(hidePostModal())
-  }
-
-  if (post === null || !isModalOpen) {
+  if (!post || !isModalOpen) {
     return null
   }
 
@@ -72,7 +69,12 @@ export const SelectedPost = () => {
   const { day, month, year } = getDateParts(post.createdAt)
 
   return (
-    <Modal className={s.Modal} isOpen={isModalOpen} onCloseOut={handleCloseOut} withoutHeader>
+    <Modal
+      className={s.Modal}
+      isOpen={isModalOpen}
+      onCloseOut={() => dispatch(hidePostModal())}
+      withoutHeader
+    >
       <div className={s.container}>
         <Carousel images={images} type={'Gray'} />
         <div className={s.contentWrapper}>
@@ -80,27 +82,30 @@ export const SelectedPost = () => {
             <div>
               <p className={s.userName}>{post.user.username}</p>
             </div>
-            <div className={s.menu}>
-              <Button
-                autoFocus={false}
-                className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
-                variant={'text'}
-              >
-                <MoreHorizontalOutline height={24} width={24} />
-              </Button>
-              {openedMenu && (
-                <div className={s.editAndDeletePostBlock} ref={menuRef}>
-                  <Button className={s.editAndDeletePostBtn} variant={'text'}>
-                    <EditOutline height={24} width={24} />
-                    <p>Edit Post</p>
-                  </Button>
-                  <Button className={s.editAndDeletePostBtn} variant={'text'}>
-                    <TrashOutline height={24} width={24} />
-                    <p>Delete Post</p>
-                  </Button>
-                </div>
-              )}
-            </div>
+            {isAuthorized && (
+              <div className={s.menu}>
+                <Button
+                  autoFocus={false}
+                  className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
+                  onClick={() => setOpenedMenu(prev => !prev)}
+                  variant={'text'}
+                >
+                  <MoreHorizontalOutline height={24} width={24} />
+                </Button>
+                {openedMenu && (
+                  <div className={s.editAndDeletePostBlock} ref={menuRef}>
+                    <Button className={s.editAndDeletePostBtn} variant={'text'}>
+                      <EditOutline height={24} width={24} />
+                      <p>Edit Post</p>
+                    </Button>
+                    <Button className={s.editAndDeletePostBtn} variant={'text'}>
+                      <TrashOutline height={24} width={24} />
+                      <p>Delete Post</p>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className={s.descriptionAndCommentsBlock}>
             <div className={s.descriptionBlock}>
@@ -114,26 +119,29 @@ export const SelectedPost = () => {
           </div>
           <div className={s.likesAndCommentsWrapper}>
             <div className={s.likesAndRepostsBlock}>
-              <div className={s.icons}>
-                <div className={s.leftIcons}>
-                  <div className={s.like} onClick={() => setLiked(prev => !prev)}>
-                    {liked ? (
-                      <Heart fill={'var( --color-danger-500)'} height={24} width={24} />
+              {isAuthorized && (
+                <div className={s.icons}>
+                  <div className={s.leftIcons}>
+                    <div className={s.like} onClick={() => setLiked(prev => !prev)}>
+                      {liked ? (
+                        <Heart fill={'var( --color-danger-500)'} height={24} width={24} />
+                      ) : (
+                        <HeartOutline fill={'white'} height={24} width={24} />
+                      )}
+                    </div>
+
+                    <PaperPlaneOutline fill={'white'} height={24} width={24} />
+                  </div>
+                  <div className={s.save} onClick={() => setSaved(prev => !prev)}>
+                    {saved ? (
+                      <Bookmark fill={'var( --color-accent-700)'} height={24} width={24} />
                     ) : (
-                      <HeartOutline fill={'white'} height={24} width={24} />
+                      <BookmarkOutline fill={'white'} height={24} width={24} />
                     )}
                   </div>
+                </div>
+              )}
 
-                  <PaperPlaneOutline fill={'white'} height={24} width={24} />
-                </div>
-                <div className={s.save} onClick={() => setSaved(prev => !prev)}>
-                  {saved ? (
-                    <Bookmark fill={'var( --color-accent-700)'} height={24} width={24} />
-                  ) : (
-                    <BookmarkOutline fill={'white'} height={24} width={24} />
-                  )}
-                </div>
-              </div>
               <div className={s.likes}>
                 <p className={s.likeCount}>
                   2243 &quot;<span>Like</span>&quot;
@@ -143,17 +151,19 @@ export const SelectedPost = () => {
                 </p>
               </div>
             </div>
-            <div className={s.addCommentBlock}>
-              <TextArea
-                className={s.addCommentArea}
-                label={''}
-                maxLength={500}
-                placeholder={'Add a Comment...'}
-              />
-              <Button className={s.publishBtn} variant={'text'}>
-                Publish
-              </Button>
-            </div>
+            {isAuthorized && (
+              <div className={s.addCommentBlock}>
+                <TextArea
+                  className={s.addCommentArea}
+                  label={''}
+                  maxLength={500}
+                  placeholder={'Add a Comment...'}
+                />
+                <Button className={s.publishBtn} variant={'text'}>
+                  Publish
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
