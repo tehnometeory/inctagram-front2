@@ -49,11 +49,7 @@ export const SelectedPost = () => {
 
   useEffect(() => {
     if (openedMenu) {
-      setTimeout(() => {
-        document.addEventListener('mousedown', handleClickOutside)
-      }, 0)
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
@@ -75,7 +71,7 @@ export const SelectedPost = () => {
       onCloseOut={() => dispatch(hidePostModal())}
       withoutHeader
     >
-      <div className={s.container}>
+      <div className={s.container} onClick={e => e.stopPropagation()}>
         <Carousel images={images} type={'Gray'} />
         <div className={s.contentWrapper}>
           <div className={s.header}>

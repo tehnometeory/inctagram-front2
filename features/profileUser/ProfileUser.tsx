@@ -64,6 +64,7 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
           return <Post key={post.id} post={post} />
         })}
       </div>
+      <SelectedPost />
     </div>
   )
 }
@@ -82,7 +83,7 @@ const Post = ({ post }: PostType) => {
   }
 
   return (
-    <div className={s.post} key={post.id} onClick={() => refreshPostHandler()}>
+    <div className={s.post} key={post.id} onClick={refreshPostHandler}>
       <Image
         alt={`Post image ${post.id}`}
         className={s.imagePost}
@@ -90,7 +91,6 @@ const Post = ({ post }: PostType) => {
         src={imageUrl}
         width={234}
       />
-      <SelectedPost />
     </div>
   )
 }
