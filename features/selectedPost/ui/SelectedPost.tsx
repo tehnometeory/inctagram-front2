@@ -71,7 +71,7 @@ export const SelectedPost = () => {
       onCloseOut={() => dispatch(hidePostModal())}
       withoutHeader
     >
-      <div className={s.container} onClick={e => e.stopPropagation()}>
+      <div className={s.container}>
         <Carousel images={images} type={'Gray'} />
         <div className={s.contentWrapper}>
           <div className={s.header}>
