@@ -1,36 +1,20 @@
 'use client'
-import ImageTest1 from '@/public/images/test-posts-image/Mask-1.png'
-import ImageTest2 from '@/public/images/test-posts-image/Mask-2.png'
-import ImageTest3 from '@/public/images/test-posts-image/Mask-3.png'
-import ImageTest4 from '@/public/images/test-posts-image/Mask-4.png'
-import ImageTest5 from '@/public/images/test-posts-image/Mask-5.png'
-import ImageTest6 from '@/public/images/test-posts-image/Mask-6.png'
-import ImageTest7 from '@/public/images/test-posts-image/Mask-7.png'
-import ImageTest8 from '@/public/images/test-posts-image/Mask-8.png'
+
+import { SelectedPost, useGetPost } from '@/features'
+import { PostResponse } from '@/features/profileUser/api/types'
 import { Button } from '@rambo-react/ui-meteors'
 import { clsx } from 'clsx'
 import Image from 'next/image'
 
 import s from './ProfileUser.module.scss'
 
-import { useMyProfilePostsQuery, useProfileUserByIdQuery } from './api'
-
-const testDataImagesPost = [
-  ImageTest1,
-  ImageTest2,
-  ImageTest3,
-  ImageTest4,
-  ImageTest5,
-  ImageTest6,
-  ImageTest7,
-  ImageTest8,
-]
+import { useProfileByIdPostsQuery, useProfileUserByIdQuery } from './api'
 
 export const ProfileUser = ({ userId }: { userId?: string }) => {
   const { data } = useProfileUserByIdQuery(userId as string)
-  const { data: posts } = useMyProfilePostsQuery(1)
 
-  console.log(posts)
+  const { data: posts } = useProfileByIdPostsQuery({ id: userId as string, page: 1 })
+
   if (!data) {
     return null
   }
@@ -76,21 +60,37 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
         </div>
       </div>
       <div className={s.posts}>
-        {posts?.map(post => (
-          <div className={s.post} key={post.id}>
-            <Image
-              alt={`Post image ${post.id}`}
-              className={s.imagePost}
-              height={228}
-              onClick={() => {
-                console.log('открытие поста')
-              }}
-              src={post.photos.url}
-              width={234}
-            />
-          </div>
-        ))}
+        {posts?.map(post => {
+          return <Post key={post.id} post={post} />
+        })}
       </div>
+    </div>
+  )
+}
+
+type PostType = {
+  post: PostResponse
+}
+
+const Post = ({ post }: PostType) => {
+  const { refreshPostHandler } = useGetPost(post.id)
+
+  const imageUrl = post.photos?.[0]?.url
+
+  if (!imageUrl) {
+    return null
+  }
+
+  return (
+    <div className={s.post} key={post.id} onClick={() => refreshPostHandler()}>
+      <Image
+        alt={`Post image ${post.id}`}
+        className={s.imagePost}
+        height={228}
+        src={imageUrl}
+        width={234}
+      />
+      <SelectedPost />
     </div>
   )
 }

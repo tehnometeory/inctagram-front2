@@ -8,15 +8,15 @@ export type ProfileUserResponse = {
   username: string
 }
 
-type Post = {
+export type PostResponse = {
   createdAt: string
   description: string
   id: string
   photos: {
     createdAt: string
-    id: {}
+    id: string
     url: string
-  }
+  }[]
   privateStatus: true
   updatedAt: string
   user: {
@@ -25,4 +25,4 @@ type Post = {
   userId: string
 }
 
-export type ProfileUserPostsResponse = Post[]
+export type ProfileUserPostsResponse = PostResponse[]

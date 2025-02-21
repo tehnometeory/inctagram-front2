@@ -27,9 +27,16 @@ export const profileUserApi = createApi({
     myProfilePosts: builder.query<ProfileUserPostsResponse, number>({
       query: page => ({
         method: 'GET',
-        url: `api/v1/posts/my-profile-posts/${page}`,
+        url: `posts/my-profile-posts?page=${page}`,
       }),
     }),
+    profileByIdPosts: builder.query<ProfileUserPostsResponse, { id: string; page: number }>({
+      query: ({ id, page }) => ({
+        method: 'GET',
+        url: `posts/profile-posts/${id}?page=${page}`,
+      }),
+    }),
+
     profileUserById: builder.query<ProfileUserResponse, string>({
       query: id => ({
         method: 'GET',
@@ -40,4 +47,9 @@ export const profileUserApi = createApi({
   reducerPath: 'profileUserApi',
 })
 
-export const { useMyProfilePostsQuery, useMyProfileQuery, useProfileUserByIdQuery } = profileUserApi
+export const {
+  useMyProfilePostsQuery,
+  useMyProfileQuery,
+  useProfileByIdPostsQuery,
+  useProfileUserByIdQuery,
+} = profileUserApi
