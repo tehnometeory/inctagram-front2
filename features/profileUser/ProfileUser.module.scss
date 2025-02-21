@@ -94,7 +94,13 @@
 }
 
 .imagePost {
+  cursor: pointer;
   object-fit: cover;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 @media (width <= 1235px) {

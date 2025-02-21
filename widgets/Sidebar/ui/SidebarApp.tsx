@@ -1,5 +1,5 @@
-import { showModal, useLogout } from '@/features'
-import { useAppDispatch, useMenuHandlers } from '@/shared'
+import { useLogout } from '@/features'
+import { useMenuHandlers } from '@/shared'
 import { Sidebar } from '@rambo-react/ui-meteors'
 
 import s from './SidebarApp.module.scss'

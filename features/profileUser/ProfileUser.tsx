@@ -10,7 +10,6 @@ import ImageTest8 from '@/public/images/test-posts-image/Mask-8.png'
 import { Button } from '@rambo-react/ui-meteors'
 import { clsx } from 'clsx'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
 
 import s from './ProfileUser.module.scss'
 
@@ -27,8 +26,7 @@ const testDataImagesPost = [
   ImageTest8,
 ]
 
-export const ProfileUser = () => {
-  const { userId } = useParams()
+export const ProfileUser = ({ userId }: { userId?: string }) => {
   const { data } = useProfileUserByIdQuery(userId as string)
 
   if (!data) {
@@ -82,6 +80,9 @@ export const ProfileUser = () => {
               alt={`Post image ${index + 1}`}
               className={s.imagePost}
               height={228}
+              onClick={() => {
+                console.log('открытие поста')
+              }}
               src={image}
               width={234}
             />
