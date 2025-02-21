@@ -13,7 +13,7 @@ import Image from 'next/image'
 
 import s from './ProfileUser.module.scss'
 
-import { useProfileUserByIdQuery } from './api'
+import { useMyProfilePostsQuery, useProfileUserByIdQuery } from './api'
 
 const testDataImagesPost = [
   ImageTest1,
@@ -28,7 +28,9 @@ const testDataImagesPost = [
 
 export const ProfileUser = ({ userId }: { userId?: string }) => {
   const { data } = useProfileUserByIdQuery(userId as string)
+  const { data: posts } = useMyProfilePostsQuery(1)
 
+  console.log(posts)
   if (!data) {
     return null
   }
@@ -74,16 +76,16 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
         </div>
       </div>
       <div className={s.posts}>
-        {testDataImagesPost.map((image, index) => (
-          <div className={s.post} key={index}>
+        {posts?.map(post => (
+          <div className={s.post} key={post.id}>
             <Image
-              alt={`Post image ${index + 1}`}
+              alt={`Post image ${post.id}`}
               className={s.imagePost}
               height={228}
               onClick={() => {
                 console.log('открытие поста')
               }}
-              src={image}
+              src={post.photos.url}
               width={234}
             />
           </div>

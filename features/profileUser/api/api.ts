@@ -1,4 +1,4 @@
-import { ProfileUserResponse } from '@/features/profileUser/api/types'
+import { ProfileUserPostsResponse, ProfileUserResponse } from '@/features/profileUser/api/types'
 import { BASE_URL_API, RootState } from '@/shared'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
@@ -24,6 +24,12 @@ export const profileUserApi = createApi({
         url: 'profile/my-profile',
       }),
     }),
+    myProfilePosts: builder.query<ProfileUserPostsResponse, number>({
+      query: page => ({
+        method: 'GET',
+        url: `api/v1/posts/my-profile-posts/${page}`,
+      }),
+    }),
     profileUserById: builder.query<ProfileUserResponse, string>({
       query: id => ({
         method: 'GET',
@@ -34,4 +40,4 @@ export const profileUserApi = createApi({
   reducerPath: 'profileUserApi',
 })
 
-export const { useMyProfileQuery, useProfileUserByIdQuery } = profileUserApi
+export const { useMyProfilePostsQuery, useMyProfileQuery, useProfileUserByIdQuery } = profileUserApi
