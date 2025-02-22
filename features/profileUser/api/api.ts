@@ -1,25 +1,10 @@
+import { baseApi } from '@/app'
 import { ProfileUserPostsResponse, ProfileUserResponse } from '@/features/profileUser/api/types'
-import { BASE_URL_API, RootState } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const profileUserApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-    prepareHeaders: (headers, { getState }) => {
-      headers.set('Content-type', 'application/json; charset=utf-8')
-      const state = getState() as RootState
-      const token = state.auth.accessToken
-
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
-      }
-
-      return headers
-    },
-  }),
+export const profileUserApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     myProfile: builder.query<ProfileUserResponse, void>({
-      providesTags: ['Profile'],
+      providesTags: ['Profile', 'Post', 'Posts'],
       query: () => ({
         method: 'GET',
         url: 'profile/my-profile',
@@ -41,15 +26,13 @@ export const profileUserApi = createApi({
     }),
 
     profileUserById: builder.query<ProfileUserResponse, string>({
-      providesTags: ['Profile'],
+      providesTags: ['Profile', 'Posts', 'Post'],
       query: id => ({
         method: 'GET',
         url: `profile/${id}`,
       }),
     }),
   }),
-  reducerPath: 'profileUserApi',
-  tagTypes: ['Profile', 'Posts', 'Post'],
 })
 
 export const {

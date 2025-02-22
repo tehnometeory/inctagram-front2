@@ -1,6 +1,6 @@
 import { baseApi } from '@/app/base-api'
 import { appReducer, authReducer } from '@/entities'
-import { createPostReducer } from '@/features'
+import { createPostReducer, selectedPostReducer } from '@/features'
 import { configureStore } from '@reduxjs/toolkit'
 
 export const store = configureStore({
@@ -10,5 +10,6 @@ export const store = configureStore({
     auth: authReducer,
     [baseApi.reducerPath]: baseApi.reducer,
     createPost: createPostReducer,
+    selectedPost: selectedPostReducer,
   },
 })
