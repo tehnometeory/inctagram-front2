@@ -20,17 +20,20 @@ export const getPostApi = createApi({
   }),
   endpoints: builder => ({
     deletePostById: builder.mutation<void, string>({
+      invalidatesTags: ['Post', 'Profile'],
       query: id => ({
         method: 'DELETE',
         url: `posts/${id}`,
       }),
     }),
     getPostById: builder.query<Post, string>({
+      providesTags: ['Post'],
       query: id => `posts/${id}`,
     }),
   }),
-
   reducerPath: 'getPostApi',
+
+  tagTypes: ['Post', 'Profile'],
 })
 
 export const { useDeletePostByIdMutation, useGetPostByIdQuery } = getPostApi

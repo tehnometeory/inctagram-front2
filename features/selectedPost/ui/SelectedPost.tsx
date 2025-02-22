@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { hidePostModal, useDeletePostByIdMutation } from '@/features'
+import { clearSelectedPost, hidePostModal, useDeletePostByIdMutation } from '@/features'
 import { Carousel, ProfileConfirmationModal, useAppDispatch, useAppSelector } from '@/shared'
 import {
   Bookmark,
@@ -78,6 +78,7 @@ export const SelectedPost = () => {
 
     try {
       await deletePost(post.id).unwrap()
+      dispatch(clearSelectedPost())
       setOpenDeleteModal(false)
       dispatch(hidePostModal())
     } catch (error) {

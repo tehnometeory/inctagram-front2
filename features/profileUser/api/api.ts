@@ -19,18 +19,21 @@ export const profileUserApi = createApi({
   }),
   endpoints: builder => ({
     myProfile: builder.query<ProfileUserResponse, void>({
+      providesTags: ['Profile'],
       query: () => ({
         method: 'GET',
         url: 'profile/my-profile',
       }),
     }),
     myProfilePosts: builder.query<ProfileUserPostsResponse, number>({
+      providesTags: ['Posts', 'Post'],
       query: page => ({
         method: 'GET',
         url: `posts/my-profile-posts?page=${page}`,
       }),
     }),
     profileByIdPosts: builder.query<ProfileUserPostsResponse, { id: string; page: number }>({
+      providesTags: ['Posts', 'Post'],
       query: ({ id, page }) => ({
         method: 'GET',
         url: `posts/profile-posts/${id}?page=${page}`,
@@ -38,6 +41,7 @@ export const profileUserApi = createApi({
     }),
 
     profileUserById: builder.query<ProfileUserResponse, string>({
+      providesTags: ['Profile'],
       query: id => ({
         method: 'GET',
         url: `profile/${id}`,
@@ -45,6 +49,7 @@ export const profileUserApi = createApi({
     }),
   }),
   reducerPath: 'profileUserApi',
+  tagTypes: ['Profile', 'Posts', 'Post'],
 })
 
 export const {
