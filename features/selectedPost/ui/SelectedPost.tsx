@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { Carousel, useAppDispatch, useAppSelector } from '@/shared'
+import { hidePostModal, useDeletePostByIdMutation } from '@/features'
+import { Carousel, ProfileConfirmationModal, useAppDispatch, useAppSelector } from '@/shared'
 import {
   Bookmark,
   BookmarkOutline,
@@ -18,14 +19,16 @@ import clsx from 'clsx'
 
 import s from './SelectedPost.module.scss'
 
-import { hidePostModal } from '..'
 import { convertToRelativeTime } from '../utils/convertToRelativeTime'
 import { getDateParts } from '../utils/getDateParts'
 
 export const SelectedPost = () => {
+  const [deletePost] = useDeletePostByIdMutation()
+
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
   const [openedMenu, setOpenedMenu] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
   const isAuthorized = useAppSelector(state => state.auth.isAuthorized)
   const dispatch = useAppDispatch()
 
@@ -64,11 +67,33 @@ export const SelectedPost = () => {
   const timeAgo = convertToRelativeTime(post.createdAt)
   const { day, month, year } = getDateParts(post.createdAt)
 
+  const handleShowDeletePostModal = () => {
+    setOpenDeleteModal(true)
+  }
+
+  const handleDeletePost = async () => {
+    if (!post) {
+      return
+    }
+
+    try {
+      await deletePost(post.id).unwrap()
+      setOpenDeleteModal(false)
+      dispatch(hidePostModal())
+    } catch (error) {
+      console.error('Ошибка при удалении поста', error)
+    }
+  }
+
   return (
     <Modal
       className={s.Modal}
       isOpen={isModalOpen}
-      onCloseOut={() => dispatch(hidePostModal())}
+      onCloseOut={() => {
+        if (!openDeleteModal) {
+          dispatch(hidePostModal())
+        }
+      }}
       withoutHeader
     >
       <div className={s.container}>
@@ -94,7 +119,11 @@ export const SelectedPost = () => {
                       <EditOutline height={24} width={24} />
                       <p>Edit Post</p>
                     </Button>
-                    <Button className={s.editAndDeletePostBtn} variant={'text'}>
+                    <Button
+                      className={s.editAndDeletePostBtn}
+                      onClick={handleShowDeletePostModal}
+                      variant={'text'}
+                    >
                       <TrashOutline height={24} width={24} />
                       <p>Delete Post</p>
                     </Button>
@@ -163,6 +192,18 @@ export const SelectedPost = () => {
           </div>
         </div>
       </div>
+      <ProfileConfirmationModal
+        buttonMode={'double'}
+        childClassName={s.deleteModalChild}
+        isOpen={openDeleteModal}
+        onCloseHandler={() => {
+          setOpenDeleteModal(false)
+        }}
+        onConfirmHandler={handleDeletePost}
+        titleModal={'Delete post'}
+      >
+        Are you sure you want to delete this post?
+      </ProfileConfirmationModal>
     </Modal>
   )
 }

@@ -87,22 +87,6 @@
   max-width: 972px;
 }
 
-.post {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.imagePost {
-  cursor: pointer;
-  object-fit: cover;
-  transition: transform 0.3s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
 @media (width <= 1235px) {
   .posts {
     grid-template-columns: repeat(3, 1fr);
@@ -112,13 +96,6 @@
 @media (width <= 990px) {
   .posts {
     gap: 3px;
-  }
-}
-
-@media (width <= 970px) {
-  .imagePost {
-    width: 200px;
-    height: 200px;
   }
 }
 
@@ -201,10 +178,5 @@
 
       @include typography.Regular_text_14;
     }
-  }
-
-  .imagePost {
-    width: 108px;
-    height: 108px;
   }
 }

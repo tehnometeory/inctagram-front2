@@ -1,7 +1,5 @@
 'use client'
 
-import { SelectedPost, useGetPost } from '@/features'
-import { PostResponse } from '@/features/profileUser/api/types'
 import { Button } from '@rambo-react/ui-meteors'
 import { clsx } from 'clsx'
 import Image from 'next/image'
@@ -9,6 +7,7 @@ import Image from 'next/image'
 import s from './ProfileUser.module.scss'
 
 import { useProfileByIdPostsQuery, useProfileUserByIdQuery } from './api'
+import { Post } from './post/Post'
 
 export const ProfileUser = ({ userId }: { userId?: string }) => {
   const { data } = useProfileUserByIdQuery(userId as string)
@@ -53,10 +52,7 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
           </span>
         </div>
         <div className={clsx(s.item, s.itemAboutMe)}>
-          <p className={s.textInfo}>
-            {data.aboutMe} Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt. laboris nisi ut aliquip ex ea commodo consequat.
-          </p>
+          <p className={s.textInfo}>{data.aboutMe}</p>
         </div>
       </div>
       <div className={s.posts}>
@@ -64,33 +60,6 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
           return <Post key={post.id} post={post} />
         })}
       </div>
-      <SelectedPost />
-    </div>
-  )
-}
-
-type PostType = {
-  post: PostResponse
-}
-
-const Post = ({ post }: PostType) => {
-  const { refreshPostHandler } = useGetPost(post.id)
-
-  const imageUrl = post.photos?.[0]?.url
-
-  if (!imageUrl) {
-    return null
-  }
-
-  return (
-    <div className={s.post} key={post.id} onClick={refreshPostHandler}>
-      <Image
-        alt={`Post image ${post.id}`}
-        className={s.imagePost}
-        height={228}
-        src={imageUrl}
-        width={234}
-      />
     </div>
   )
 }
