@@ -1,15 +1,8 @@
-import { BASE_URL_API } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
 
 import { ResetPasswordArgs, ResetPasswordResponse } from './types'
 
-export const forgotPasswordApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-    prepareHeaders: headers => {
-      headers.set('Content-type', 'application/json; charset=utf-8')
-    },
-  }),
+export const forgotPasswordApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     resetPassword: builder.mutation<ResetPasswordResponse, ResetPasswordArgs>({
       query: ({ email, recaptchaValue }) => ({
@@ -19,7 +12,6 @@ export const forgotPasswordApi = createApi({
       }),
     }),
   }),
-  reducerPath: 'forgotPasswordApi',
 })
 
 export const { useResetPasswordMutation } = forgotPasswordApi
