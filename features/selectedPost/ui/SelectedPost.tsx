@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { setAlert } from '@/entities'
 import { clearSelectedPost, hidePostModal, useDeletePostByIdMutation } from '@/features'
 import { Carousel, ProfileConfirmationModal, useAppDispatch, useAppSelector } from '@/shared'
 import {
@@ -81,8 +82,9 @@ export const SelectedPost = () => {
       dispatch(clearSelectedPost())
       setOpenDeleteModal(false)
       dispatch(hidePostModal())
+      dispatch(setAlert({ message: 'Пост удален', type: 'accepted' }))
     } catch (error) {
-      console.error('Ошибка при удалении поста', error)
+      dispatch(setAlert({ message: 'Ошибка удаления поста', type: 'error' }))
     }
   }
 

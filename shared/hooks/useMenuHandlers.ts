@@ -7,7 +7,6 @@ export const useMenuHandlers = () => {
   const router = useNRouter()
   const { data } = useMyProfileQuery()
 
-  console.log(data)
   const dispatch = useAppDispatch()
 
   return [
