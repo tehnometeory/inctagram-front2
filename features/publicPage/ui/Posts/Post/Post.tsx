@@ -22,8 +22,6 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
 
   const onShowMoreClickHandler = () => setIsDescriptionExpanded(!isDescriptionExpanded)
 
-  description = description.repeat(100).split('').join(' ')
-
   const descriptionText = isDescriptionExpanded ? description : description.slice(0, 100).trim()
   const descriptionEnding = isDescriptionExpanded ? ' ' : (description.length > 100 && '... ') || ''
 
