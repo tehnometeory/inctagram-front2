@@ -19,7 +19,6 @@ export const FiltersContainer = () => {
           activeSlide={activeImageIndex}
           images={croppedImages}
           passActiveSlide={setActiveImageIndex}
-          type={'Black'}
         />
         <Filters
           activeImage={croppedImages[activeImageIndex]}
