@@ -1,4 +1,3 @@
-import { useLogout } from '@/features'
 import { useMenuHandlers } from '@/shared'
 import { Menu } from '@rambo-react/ui-meteors'
 
