@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { setAlert } from '@/entities'
@@ -100,7 +102,7 @@ export const SelectedPost = () => {
       withoutHeader
     >
       <div className={s.container}>
-        <Carousel images={images} type={'Gray'} />
+        <Carousel images={images} />
         <div className={s.contentWrapper}>
           <div className={s.header}>
             <div>
