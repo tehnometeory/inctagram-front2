@@ -22,19 +22,19 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
 
   const onShowMoreClickHandler = () => setIsExpanded(!isExpanded)
 
-  const photosSrc = photos.length === 1 ? photos[0].url : photos.map(photo => photo.url)
+  const descriptionText = isExpanded ? description : description.slice(0, 100).trim()
+  const descriptionEnding = isExpanded ? ' ' : (description.length > 100 && '... ') || ''
 
-  const descriptionEnding = isExpanded ? ' ' : description.length > 100 ? '... ' : ''
+  const photo =
+    photos.length === 1 ? (
+      <Image alt={'avatar'} height={240} priority src={photos[0].url} width={240} />
+    ) : (
+      <Carousel images={photos.map(photo => photo.url)} miniVersion />
+    )
 
   return (
     <div className={s.publicPagePost}>
-      <div className={clsx(s.postImages, isExpanded && s.hiden)}>
-        {photos.length === 1 ? (
-          <Image alt={'avatar'} height={240} priority src={photosSrc as string} width={240} />
-        ) : (
-          <Carousel images={photosSrc as string[]} type={'Black'} />
-        )}
-      </div>
+      <div className={clsx(s.postImages, isExpanded && s.hiden)}>{photo}</div>
 
       <div className={s.user}>
         <Image
@@ -52,7 +52,7 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
       <span className={s.publicationTime}>{getTimeAgo(publicationTime)}</span>
 
       <p className={s.description}>
-        {`${isExpanded ? description : description.slice(0, 100).trim()}${descriptionEnding}`}
+        {descriptionText + descriptionEnding}
 
         {description.length > 100 && (
           <button className={s.showMore} onClick={onShowMoreClickHandler} type={'button'}>
