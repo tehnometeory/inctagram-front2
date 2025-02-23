@@ -1,5 +1,6 @@
 'use client'
 import { ProfileUser, SelectedPost } from '@/features'
+import { EditPost } from '@/features/selectedPost/ui/editPost/EditPost'
 import { useParams } from 'next/navigation'
 
 export default function ProfilePage() {
@@ -9,6 +10,7 @@ export default function ProfilePage() {
     <>
       <ProfileUser userId={userId as string} />
       <SelectedPost />
+      <EditPost />
     </>
   )
 }
