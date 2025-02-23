@@ -1,30 +1,22 @@
-import { BASE_URL_API } from '@/shared'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@/app'
 
 import { Post } from '../model/types'
 
-export const getPostApi = createApi({
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL_API,
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as any)?.auth?.accessToken
-
-      headers.set('User-Agent', navigator.userAgent)
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`)
-      }
-
-      return headers
-    },
-  }),
+export const getPostApi = baseApi.injectEndpoints({
   endpoints: builder => ({
+    deletePostById: builder.mutation<void, string>({
+      invalidatesTags: ['Post'],
+      query: id => ({
+        method: 'DELETE',
+        url: `posts/${id}`,
+      }),
+    }),
     getPostById: builder.query<Post, string>({
       query: id => `posts/${id}`,
     }),
     sentNewDescription: builder.mutation<
       any,
-      { description: string | undefined; id: string | undefined }
+      { description?: string; id?: string }
     >({
       query: ({ description, id }) => {
         return {
@@ -35,8 +27,6 @@ export const getPostApi = createApi({
       },
     }),
   }),
-
-  reducerPath: 'getPostApi',
 })
 
-export const { useGetPostByIdQuery, useSentNewDescriptionMutation } = getPostApi
+export const { useDeletePostByIdMutation, useGetPostByIdQuery, useSentNewDescriptionMutation } = getPostApi

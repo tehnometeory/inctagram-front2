@@ -1,6 +1,10 @@
+'use client'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { Carousel, useAppDispatch, useAppSelector } from '@/shared'
+import { setAlert } from '@/entities'
+import { clearSelectedPost, hidePostModal, useDeletePostByIdMutation } from '@/features'
+import { Carousel, ProfileConfirmationModal, useAppDispatch, useAppSelector } from '@/shared'
 import {
   Bookmark,
   BookmarkOutline,
@@ -18,15 +22,18 @@ import clsx from 'clsx'
 
 import s from './SelectedPost.module.scss'
 
-import { hidePostModal, showEditModal } from '..'
+import { showEditModal } from '..'
 import { convertToRelativeTime } from '../utils/convertToRelativeTime'
 import { getDateParts } from '../utils/getDateParts'
 
 export const SelectedPost = () => {
+  const [deletePost] = useDeletePostByIdMutation()
+
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
   const [openedMenu, setOpenedMenu] = useState(false)
-
+  const [openDeleteModal, setOpenDeleteModal] = useState(false)
+  const isAuthorized = useAppSelector(state => state.auth.isAuthorized)
   const dispatch = useAppDispatch()
 
   const post = useAppSelector(state => state.selectedPost.post)
@@ -47,7 +54,7 @@ export const SelectedPost = () => {
   )
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (openedMenu) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
@@ -72,8 +79,37 @@ export const SelectedPost = () => {
   const timeAgo = convertToRelativeTime(post.createdAt)
   const { day, month, year } = getDateParts(post.createdAt)
 
+  const handleShowDeletePostModal = () => {
+    setOpenDeleteModal(true)
+  }
+
+  const handleDeletePost = async () => {
+    if (!post) {
+      return
+    }
+
+    try {
+      await deletePost(post.id).unwrap()
+      dispatch(clearSelectedPost())
+      setOpenDeleteModal(false)
+      dispatch(hidePostModal())
+      dispatch(setAlert({ message: 'Пост удален', type: 'accepted' }))
+    } catch (error) {
+      dispatch(setAlert({ message: 'Ошибка удаления поста', type: 'error' }))
+    }
+  }
+
   return (
-    <Modal className={s.Modal} isOpen={isModalOpen} onCloseOut={handleCloseOut} withoutHeader>
+    <Modal
+      className={s.Modal}
+      isOpen={isModalOpen}
+      onCloseOut={() => {
+        if (!openDeleteModal) {
+          dispatch(hidePostModal())
+        }
+      }}
+      withoutHeader
+    >
       <div className={s.container}>
         <Carousel images={images} />
         <div className={s.contentWrapper}>
@@ -81,32 +117,38 @@ export const SelectedPost = () => {
             <div>
               <p className={s.userName}>{post.user.username}</p>
             </div>
-            <div className={s.menu}>
-              <Button
-                autoFocus={false}
-                className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
-                onClick={() => setOpenedMenu(!openedMenu)}
-                variant={'text'}
-              >
-                <MoreHorizontalOutline height={24} width={24} />
-              </Button>
-              {openedMenu && (
-                <div className={s.editAndDeletePostBlock} ref={menuRef}>
-                  <Button
-                    className={s.editAndDeletePostBtn}
-                    onClick={handleClickEditPost}
-                    variant={'text'}
-                  >
-                    <EditOutline height={24} width={24} />
-                    <p>Edit Post</p>
-                  </Button>
-                  <Button className={s.editAndDeletePostBtn} variant={'text'}>
-                    <TrashOutline height={24} width={24} />
-                    <p>Delete Post</p>
-                  </Button>
-                </div>
-              )}
-            </div>
+            {isAuthorized && (
+              <div className={s.menu}>
+                <Button
+                  autoFocus={false}
+                  className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
+                  onClick={() => setOpenedMenu(!openedMenu)}
+                  variant={'text'}
+                >
+                  <MoreHorizontalOutline height={24} width={24} />
+                </Button>
+                {openedMenu && (
+                  <div className={s.editAndDeletePostBlock} ref={menuRef}>
+                    <Button
+                      className={s.editAndDeletePostBtn}
+                      onClick={handleClickEditPost}
+                      variant={'text'}
+                    >
+                      <EditOutline height={24} width={24} />
+                      <p>Edit Post</p>
+                    </Button>
+                    <Button
+                      className={s.editAndDeletePostBtn}
+                      onClick={handleShowDeletePostModal}
+                      variant={'text'}
+                    >
+                      <TrashOutline height={24} width={24} />
+                      <p>Delete Post</p>
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className={s.descriptionAndCommentsBlock}>
             <div className={s.descriptionBlock}>
@@ -163,6 +205,18 @@ export const SelectedPost = () => {
           </div>
         </div>
       </div>
+      <ProfileConfirmationModal
+        buttonMode={'double'}
+        childClassName={s.deleteModalChild}
+        isOpen={openDeleteModal}
+        onCloseHandler={() => {
+          setOpenDeleteModal(false)
+        }}
+        onConfirmHandler={handleDeletePost}
+        titleModal={'Delete post'}
+      >
+        Are you sure you want to delete this post?
+      </ProfileConfirmationModal>
     </Modal>
   )
 }
