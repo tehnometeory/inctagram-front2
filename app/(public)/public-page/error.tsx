@@ -2,6 +2,10 @@
 
 import { useEffect } from 'react'
 
+import { Button } from '@rambo-react/ui-meteors'
+
+import s from './Error.module.scss'
+
 export default function Error({
   error,
   reset,
@@ -14,11 +18,12 @@ export default function Error({
   }, [error])
 
   return (
-    <main>
+    <main className={s.error}>
       <h2>Something went wrong!</h2>
-      <button onClick={() => reset()} type={'button'}>
+
+      <Button onClick={() => reset()} type={'button'}>
         Try again
-      </button>
+      </Button>
     </main>
   )
 }
