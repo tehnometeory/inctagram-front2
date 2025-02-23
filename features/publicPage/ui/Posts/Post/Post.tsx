@@ -18,15 +18,17 @@ type Props = {
 }
 
 export const Post = ({ avatar, description, photos, publicationTime, username }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(false)
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
-  const onShowMoreClickHandler = () => setIsExpanded(!isExpanded)
+  const onShowMoreClickHandler = () => setIsDescriptionExpanded(!isDescriptionExpanded)
 
-  const descriptionText = isExpanded ? description : description.slice(0, 100).trim()
-  const descriptionEnding = isExpanded ? ' ' : (description.length > 100 && '... ') || ''
+  description = description.repeat(100).split('').join(' ')
+
+  const descriptionText = isDescriptionExpanded ? description : description.slice(0, 100).trim()
+  const descriptionEnding = isDescriptionExpanded ? ' ' : (description.length > 100 && '... ') || ''
 
   const photo =
-    photos.length === 1 ? (
+    photos.length === 1 || isDescriptionExpanded ? (
       <Image alt={'avatar'} height={240} priority src={photos[0].url} width={240} />
     ) : (
       <Carousel images={photos.map(photo => photo.url)} miniVersion />
@@ -34,7 +36,7 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
 
   return (
     <div className={s.publicPagePost}>
-      <div className={clsx(s.postImages, isExpanded && s.hiden)}>{photo}</div>
+      <div className={clsx(s.postImages, isDescriptionExpanded && s.hiden)}>{photo}</div>
 
       <div className={s.user}>
         <Image
@@ -56,7 +58,7 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
 
         {description.length > 100 && (
           <button className={s.showMore} onClick={onShowMoreClickHandler} type={'button'}>
-            {isExpanded ? 'Hide' : 'Show more'}
+            {isDescriptionExpanded ? 'Hide' : 'Show more'}
           </button>
         )}
       </p>
