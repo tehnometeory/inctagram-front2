@@ -1,32 +1,6 @@
 
 @use '@rambo-react/ui-meteors/dist/typography' as typography;
 
-.ava {
-    height: 36px;
-    width: 36px;
-    border-radius: 50%;
-}
-
-.avaWrapper {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 24px;
-}
-
-.urlProfile {
-    cursor: pointer;
-    padding-left:  12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &:hover,
-    &:focus {
-        color: var(--color-accent-700);
-    }
-}
-
-
 .description {
     max-width: 433px;
     min-height: 120px;
@@ -49,11 +23,6 @@
     box-sizing: border-box;
     background-color: var(--color-dark-100);
 }
-
-.containerWrapper {
-
-}
-
 
 .container {
     display: flex;

@@ -1,44 +1,36 @@
-import { useCallback } from 'react'
+'use client'
+import { hideEditModal, showPostModal } from '@/features'
+import { useAppDispatch, useAppSelector } from '@/shared'
+import { Modal } from '@rambo-react/ui-meteors'
 
-import { DescriptionPost } from '@/features/createPost/ui/steps/Publication/DescriptionPost'
-import {
-  hideEditModal,
-  sentNewPostDescription,
-  showPostModal,
-  useSentNewDescriptionMutation,
-} from '@/features/selectedPost'
-import { Carousel, useAppDispatch, useAppSelector } from '@/shared'
-import { Button } from '@rambo-react/ui-meteors'
+import s from './EditPost.module.scss'
 
-import s from './EditPostContainer.module.scss'
+import { EditPost } from './EditPost'
 
 export const EditPostContainer = () => {
-  const post = useAppSelector(state => state.selectedPost.post)
-  const id = useAppSelector(state => state.selectedPost.post?.id)
-  const images = post?.photos?.map(photo => photo.url) ?? []
-  const urlProfile = post?.user.username
-  const description = useAppSelector(state => state.selectedPost.post?.description)
-  const [sentNewDescription] = useSentNewDescriptionMutation()
+  const isEdit = useAppSelector(state => state.selectedPost.isEditing)
   const dispatch = useAppDispatch()
 
-  const handleSentNewDescription = () => {
-    sentNewDescription({ description, id })
+  const closeHandler = () => {
     dispatch(hideEditModal())
     dispatch(showPostModal())
   }
 
+  if (!isEdit) {
+    return null
+  }
+
   return (
-    <div className={s.container}>
-      <Carousel images={images} />
-      <DescriptionPost
-        description={description || ''}
-        sentNewPostDescription={sentNewPostDescription}
-        urlProfile={urlProfile}
+    <>
+      <Modal
+        className={s.modal}
+        isOpen={isEdit}
+        onClose={closeHandler}
+        onCloseOut={closeHandler}
+        title={'Edit Post'}
       >
-        <Button className={s.buttonEdit} onClick={handleSentNewDescription}>
-          Save Changes
-        </Button>
-      </DescriptionPost>
-    </div>
+        <EditPost />
+      </Modal>
+    </>
   )
 }

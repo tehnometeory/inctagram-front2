@@ -1,37 +1,60 @@
-'use client'
-import { CancelPostModal, hideEditModal, showPostModal } from '@/features'
-import { useAppDispatch, useAppSelector } from '@/shared'
-import { Modal } from '@rambo-react/ui-meteors'
+import {
+  hideEditModal,
+  sentNewPostDescription,
+  showPostModal,
+  useSentNewDescriptionMutation,
+} from '@/features/selectedPost'
+import { Carousel, DescriptionPost, useAppDispatch, useAppSelector } from '@/shared'
+import { Button } from '@rambo-react/ui-meteors'
+import Image from 'next/image'
 
-import s from '@/shared/styles/DescriptionPost.module.scss'
-
-import { EditPostContainer } from './EditPostContainer'
+import s from './EditPost.module.scss'
 
 export const EditPost = () => {
-  const isEdit = useAppSelector(state => state.selectedPost.isEditing)
+  const post = useAppSelector(state => state.selectedPost.post)
+  const id = post?.id
+  const images = post?.photos?.map(photo => photo.url) ?? []
+  const urlProfile = post?.user.username
+  const description = post?.description
+  const [sentNewDescription] = useSentNewDescriptionMutation()
   const dispatch = useAppDispatch()
 
-  const closeHandler = () => {
+  const handleSentNewDescription = () => {
+    sentNewDescription({ description, id })
     dispatch(hideEditModal())
     dispatch(showPostModal())
   }
 
-  if (!isEdit) {
-    return null
-  }
-
   return (
-    <>
-      <CancelPostModal />
-      <Modal
-        className={s.modal}
-        isOpen={isEdit}
-        onClose={closeHandler}
-        onCloseOut={closeHandler}
-        title={'Edit Post'}
+    <div className={s.container}>
+      <div style={{ height: 503, width: 490 }}>
+        <div
+          style={{
+            height: 503,
+            position: 'relative',
+            width: 490,
+          }}
+        >
+          <Image
+            alt={`Image 1}`}
+            fill
+            loading={'eager'}
+            src={images[0]}
+            style={{
+              objectFit: 'cover',
+            }}
+          />
+        </div>
+      </div>
+      <DescriptionPost
+        description={description || ''}
+        sentNewPostDescription={sentNewPostDescription}
+        urlProfile={urlProfile}
       >
-        <EditPostContainer />
-      </Modal>
-    </>
+        <Button className={s.buttonEdit} onClick={handleSentNewDescription}>
+          Save Changes
+        </Button>
+      </DescriptionPost>
+    </div>
   )
 }
