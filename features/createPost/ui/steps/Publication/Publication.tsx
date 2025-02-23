@@ -22,8 +22,8 @@ export const PublicationPost = () => {
     <div className={s.containerWrapper}>
       <div className={s.container}>
         <div className={s.avaWrapper}>
-          <Image alt={'userAvatar'} className={s.ava} src={ava} />
-          <a className={s.urlProfile}>URLProfile</a>
+          <Image alt={'userAvatar'} className={s.ava} fill src={ava} />
+          <p className={s.urlProfile}>URLProfile</p>
         </div>
         <TextArea
           className={s.description}
