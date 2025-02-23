@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Carousel, useAppDispatch, useAppSelector } from '@/shared'
