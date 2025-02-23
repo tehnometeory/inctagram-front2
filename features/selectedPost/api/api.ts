@@ -22,9 +22,21 @@ export const getPostApi = createApi({
     getPostById: builder.query<Post, string>({
       query: id => `posts/${id}`,
     }),
+    sentNewDescription: builder.mutation<
+      any,
+      { description: string | undefined; id: string | undefined }
+    >({
+      query: ({ description, id }) => {
+        return {
+          body: { description },
+          method: 'PUT',
+          url: `posts/${id}`,
+        }
+      },
+    }),
   }),
 
   reducerPath: 'getPostApi',
 })
 
-export const { useGetPostByIdQuery } = getPostApi
+export const { useGetPostByIdQuery, useSentNewDescriptionMutation } = getPostApi

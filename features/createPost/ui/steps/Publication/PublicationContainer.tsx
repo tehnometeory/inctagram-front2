@@ -1,11 +1,13 @@
 import { useState } from 'react'
 
+import { updateDescription } from '@/features/createPost/model'
 import { useAppSelector } from '@/shared'
 import { Carousel } from '@/shared/ui/Carousel'
 
 import s from './PublicationContainer.module.scss'
-import { updateDescription } from '@/features/createPost/model'
+
 import { DescriptionPost } from './DescriptionPost'
+import { LocationPost } from './LocationPost/LocationPost'
 
 export const PublicationContainer = () => {
   {
@@ -20,16 +22,16 @@ export const PublicationContainer = () => {
           activeSlide={activeImageIndex}
           images={croppedImages}
           passActiveSlide={setActiveImageIndex}
-          type={'Black'}
         />
-        <DescriptionPost urlProfile={'URL_Profile'} sentNewPostDescription={updateDescription} showSeparator={true} description={description || ""} >
-          <Location/>
+        <DescriptionPost
+          description={description || ''}
+          sentNewPostDescription={updateDescription}
+          showSeparator
+          urlProfile={'URL_Profile'}
+        >
+          <LocationPost />
         </DescriptionPost>
       </div>
     )
   }
-}
-
-const Location = () => {
-  return <></>
 }

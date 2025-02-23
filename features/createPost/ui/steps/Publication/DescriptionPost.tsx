@@ -1,4 +1,4 @@
-import React, { ChangeEvent, memo, ReactNode, useCallback } from 'react'
+import React, { ChangeEvent, ReactNode, memo, useCallback } from 'react'
 
 import ava from '@/public/images/test_userAvatar.png'
 import { useAppDispatch } from '@/shared'
@@ -10,32 +10,34 @@ import s from '@/shared/styles/DescriptionPost.module.scss'
 
 type Props = {
   children: ReactNode
-  showSeparator?: boolean
   description: string
   sentNewPostDescription: (payload: { newDescription: string }) => PayloadAction<{
     newDescription: string
   }>
-  urlProfile: string | undefined
+  showSeparator?: boolean
+  urlProfile?: string
 }
 export const DescriptionPost = ({
   children,
   description,
   sentNewPostDescription,
-  urlProfile,
-  showSeparator = false
+  showSeparator = false,
+  urlProfile = '',
 }: Props) => {
-
   const dispatch = useAppDispatch()
-  const onChangeHandler = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
-    const newDescription = event.currentTarget.value
+  const onChangeHandler = useCallback(
+    (event: ChangeEvent<HTMLTextAreaElement>) => {
+      const newDescription = event.currentTarget.value
 
-    dispatch(sentNewPostDescription({newDescription} ))
-  }, [sentNewPostDescription])
+      dispatch(sentNewPostDescription({ newDescription }))
+    },
+    [sentNewPostDescription]
+  )
 
   return (
     <div className={s.containerWrapper}>
       <div className={s.container}>
-      <ProfileInfo urlProfile={urlProfile} />
+        <ProfileInfo urlProfile={urlProfile} />
         <TextArea
           className={s.description}
           label={'Add publication descriptions'}
@@ -51,14 +53,11 @@ export const DescriptionPost = ({
   )
 }
 
-
-const ProfileInfo = memo(({ urlProfile }: { urlProfile: string | undefined }) => (
-  <div className={s.avaWrapper}>
-    <Image
-      alt="userAvatar"
-      className={s.ava}
-      src={ava}
-    />
-    <span className={s.urlProfile}>{urlProfile}</span>
-  </div>
-))
+const ProfileInfo = ({ urlProfile }: { urlProfile: string }) => {
+  return (
+    <div className={s.avaWrapper}>
+      <Image alt={'userAvatar'} className={s.ava} src={ava} />
+      <span className={s.urlProfile}>{urlProfile}</span>
+    </div>
+  )
+}

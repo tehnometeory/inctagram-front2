@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 
 import { DescriptionPost } from '@/features/createPost/ui/steps/Publication/DescriptionPost'
 import {
@@ -21,25 +21,17 @@ export const EditPostContainer = () => {
   const [sentNewDescription] = useSentNewDescriptionMutation()
   const dispatch = useAppDispatch()
 
-  const handleSentNewDescription = useCallback(() => {
+  const handleSentNewDescription = () => {
     sentNewDescription({ description, id })
     dispatch(hideEditModal())
     dispatch(showPostModal())
-  }, [dispatch])
-
-  useEffect(() => {
-    const hrElement: any = document.querySelector(`.${s.hr}`)
-
-    if (hrElement) {
-      hrElement.style.display = 'none'
-    }
-  }, [])
+  }
 
   return (
     <div className={s.container}>
-      <Carousel images={images} type={'Black'} />
+      <Carousel images={images} />
       <DescriptionPost
-        description={description || ""}
+        description={description || ''}
         sentNewPostDescription={sentNewPostDescription}
         urlProfile={urlProfile}
       >

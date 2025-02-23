@@ -75,7 +75,7 @@ export const SelectedPost = () => {
   return (
     <Modal className={s.Modal} isOpen={isModalOpen} onCloseOut={handleCloseOut} withoutHeader>
       <div className={s.container}>
-        <Carousel images={images} type={'Gray'} />
+        <Carousel images={images} />
         <div className={s.contentWrapper}>
           <div className={s.header}>
             <div>
