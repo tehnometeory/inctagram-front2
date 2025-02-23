@@ -1,9 +1,9 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import { useAppSelector } from '@/shared'
-import { ArrowIosBack, ArrowIosBackOutline, ArrowIosForward } from '@rambo-react/ui-meteors'
+import { ArrowIosBack, ArrowIosForward } from '@rambo-react/ui-meteors'
 import clsx from 'clsx'
 import Image from 'next/image'
 import { Navigation, Pagination } from 'swiper/modules'
@@ -16,18 +16,15 @@ import 'swiper/css/pagination'
 import styles from './Carousel.module.scss'
 
 type Props = {
-  activeSlide: number
+  activeSlide?: number
   images: string[]
+  miniVersion?: boolean
   passActiveSlide?: (index: number) => void
-  type: 'Black' | 'Gray'
 }
 
-export const Carousel = ({ activeSlide, images, passActiveSlide, type }: Props) => {
-  const [isBeginning, setIsBeginning] = useState(true)
-  const [isEnd, setIsEnd] = useState(false)
-
+export const Carousel = ({ activeSlide = 0, images, miniVersion, passActiveSlide }: Props) => {
   const activeFilter = useAppSelector(
-    state => state.createPost.currentPost.images[activeSlide].activeFilter
+    state => state.createPost.currentPost.images[activeSlide]?.activeFilter
   )
 
   const handleSlideChange = useCallback(
@@ -41,39 +38,41 @@ export const Carousel = ({ activeSlide, images, passActiveSlide, type }: Props) 
   const shouldShowNavigation = images.length > 1
 
   return (
-    <div className={styles.container}>
+    <div style={{ height: miniVersion ? 240 : 503, width: miniVersion ? 234 : 490 }}>
       <Swiper
-        loop={false}
+        loop
         modules={[Navigation, Pagination]}
         navigation={{
-          nextEl: `.${styles[`swiperButtonNext${type}`]}`,
-          prevEl: `.${styles[`swiperButtonPrev${type}`]}`,
+          nextEl: `.${styles[`swiperButtonNext`]}`,
+          prevEl: `.${styles[`swiperButtonPrev`]}`,
         }}
         onSlideChange={swiper => {
-          setIsBeginning(swiper.isBeginning)
-          setIsEnd(swiper.isEnd)
           handleSlideChange(swiper)
         }}
         pagination={
           shouldShowNavigation && {
             bulletActiveClass: 'swiper-pagination-button-active',
             bulletClass: 'swiper-pagination-button',
-            el: `.${styles[`swiperPagination${type}`]}`,
+            el: `.${styles[`swiperPagination`]}`,
             type: 'bullets',
           }
         }
         slidesPerView={1}
-        spaceBetween={50}
       >
         {images.map((src, index) => (
           <SwiperSlide key={index}>
-            <div style={{ height: '503px', position: 'relative', width: '490px' }}>
+            <div
+              style={{
+                height: miniVersion ? 240 : 503,
+                position: 'relative',
+                width: miniVersion ? 234 : 490,
+              }}
+            >
               <Image
                 alt={`Image ${index + 1}`}
                 fill
                 loading={index === 0 ? 'eager' : 'lazy'}
                 priority={index === 0}
-                sizes={'(max-width: 490px), 490px'}
                 src={src}
                 style={{
                   filter: index === activeSlide ? activeFilter : 'none',
@@ -85,39 +84,26 @@ export const Carousel = ({ activeSlide, images, passActiveSlide, type }: Props) 
         ))}
         {shouldShowNavigation && (
           <>
-            <div className={clsx(styles[`swiperButtonNext${type}`], isEnd && styles.hiddenButton)}>
+            <div className={clsx(styles[`swiperButtonNext`])}>
               <ArrowIosForward
-                className={styles[`swiperNextIcon${type}`]}
+                className={styles[`swiperNextIcon`]}
                 fill={'white'}
-                height={type === 'Black' ? 24 : 48}
-                width={type === 'Black' ? 24 : 48}
+                height={miniVersion ? 24 : 48}
+                width={miniVersion ? 24 : 48}
+              />
+            </div>
+            <div className={styles.swiperButtonPrev}>
+              <ArrowIosBack
+                className={styles[`swiperPrevIcon`]}
+                fill={'white'}
+                height={miniVersion ? 24 : 48}
+                width={miniVersion ? 24 : 48}
               />
             </div>
 
             <div
-              className={clsx(styles[`swiperButtonPrev${type}`], {
-                [styles.hiddenButton]: isBeginning,
-              })}
-            >
-              {type === 'Black' && (
-                <ArrowIosBack
-                  className={styles[`swiperPrevIcon${type}`]}
-                  fill={'white'}
-                  height={24}
-                  width={24}
-                />
-              )}
-              {type === 'Gray' && (
-                <ArrowIosBackOutline
-                  className={styles[`swiperPrevIcon${type}`]}
-                  fill={'white'}
-                  height={48}
-                  width={48}
-                />
-              )}
-            </div>
-
-            <div className={styles[`swiperPagination${type}`]} />
+              className={clsx(styles.swiperPagination, miniVersion && styles.swiperPaginationMini)}
+            />
           </>
         )}
       </Swiper>

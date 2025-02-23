@@ -1,0 +1,20 @@
+import { baseApi } from '@/app'
+
+import { Post } from '../model/types'
+
+export const getPostApi = baseApi.injectEndpoints({
+  endpoints: builder => ({
+    deletePostById: builder.mutation<void, string>({
+      invalidatesTags: ['Post'],
+      query: id => ({
+        method: 'DELETE',
+        url: `posts/${id}`,
+      }),
+    }),
+    getPostById: builder.query<Post, string>({
+      query: id => `posts/${id}`,
+    }),
+  }),
+})
+
+export const { useDeletePostByIdMutation, useGetPostByIdQuery } = getPostApi
