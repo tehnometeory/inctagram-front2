@@ -22,7 +22,7 @@ export const PublicationPost = () => {
     <div className={s.containerWrapper}>
       <div className={s.container}>
         <div className={s.avaWrapper}>
-          <Image alt={'userAvatar'} className={s.ava} fill src={ava} />
+          <Image alt={'userAvatar'} className={s.ava} height={36} src={ava} width={36} />
           <p className={s.urlProfile}>URLProfile</p>
         </div>
         <TextArea
