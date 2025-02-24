@@ -1,29 +1,25 @@
 'use client'
 
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
 
 import { CreatePost } from '@/features'
-import { RoutesApp, useAppSelector, useNRouter } from '@/shared'
-import { HeaderApp } from '@/widgets'
+import { ContentContainer, SidebarLayout, useAppSelector } from '@/shared'
+import { HeaderApp, HeaderPublic, SidebarApp } from '@/widgets'
 
 export default function AppLayout({ children }: { children: ReactNode }) {
-  const router = useNRouter()
   const isAuth = useAppSelector(state => state.auth.isAuthorized)
-
-  useEffect(() => {
-    if (!isAuth) {
-      router.replace(RoutesApp.signIn)
-    }
-  }, [isAuth, router])
-
-  if (!isAuth) {
-    return null
-  }
 
   return (
     <>
-      <HeaderApp isAuth={isAuth} />
-      {children}
+      {isAuth ? <HeaderApp isAuth={isAuth} /> : <HeaderPublic />}
+      {isAuth ? (
+        <SidebarLayout>
+          <SidebarApp />
+          <ContentContainer>{children}</ContentContainer>
+        </SidebarLayout>
+      ) : (
+        <ContentContainer>{children}</ContentContainer>
+      )}
       <CreatePost />
     </>
   )
