@@ -1,6 +1,5 @@
 import { baseApi } from '@/app'
-
-import { Post } from '../model/types'
+import { PostType } from '@/shared'
 
 export const getPostApi = baseApi.injectEndpoints({
   endpoints: builder => ({
@@ -11,7 +10,7 @@ export const getPostApi = baseApi.injectEndpoints({
         url: `posts/${id}`,
       }),
     }),
-    getPostById: builder.query<Post, string>({
+    getPostById: builder.query<PostType, string>({
       query: id => `posts/${id}`,
     }),
   }),

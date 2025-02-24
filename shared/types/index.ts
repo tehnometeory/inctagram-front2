@@ -1,4 +1,5 @@
 export * from './ErrorsMessagesResponse'
+export * from './PostType'
 export * from './ReduxTypes'
 export * from './ResponseWithAccessToken'
 export * from './Utility'

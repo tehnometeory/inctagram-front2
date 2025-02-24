@@ -1,25 +1,28 @@
-import { useGetPost } from '@/features'
+import { setSelectedPost, showPostModal } from '@/features'
+import { PostType, useAppDispatch } from '@/shared'
 import Image from 'next/image'
 
 import s from './Post.module.scss'
 
-import { PostResponse } from '../api/types'
-
 type Props = {
-  post: PostResponse
+  post: PostType
 }
 
 export const Post = ({ post }: Props) => {
-  const { refreshPostHandler } = useGetPost(post.id)
-
+  const dispatch = useAppDispatch()
   const imageUrl = post.photos?.[0]?.url
 
   if (!imageUrl) {
     return null
   }
 
+  const onPostClick = () => {
+    dispatch(setSelectedPost(post))
+    dispatch(showPostModal())
+  }
+
   return (
-    <div className={s.post} key={post.id} onClick={refreshPostHandler}>
+    <div className={s.post} key={post.id} onClick={onPostClick}>
       <Image
         alt={`Post image ${post.id}`}
         className={s.imagePost}
