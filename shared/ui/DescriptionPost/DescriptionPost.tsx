@@ -6,7 +6,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 
 import s from './DescriptionPost.module.scss'
 
-import { NameAndAvatarUser } from './NameAndAvatarUser'
+import { NameAndAvatarUser } from '../NameAndAvatarUser/NameAndAvatarUser'
 
 type Props = {
   children: ReactNode
@@ -31,7 +31,7 @@ export const DescriptionPost = ({
 
       dispatch(sentNewPostDescription({ newDescription }))
     },
-    [sentNewPostDescription]
+    [dispatch, sentNewPostDescription]
   )
 
   return (

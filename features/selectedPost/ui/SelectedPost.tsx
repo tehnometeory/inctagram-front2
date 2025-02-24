@@ -44,14 +44,15 @@ export const SelectedPost = () => {
 
   const menuRef = useRef<HTMLDivElement | null>(null)
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenedMenu(false)
-      }
-    },
-    [setOpenedMenu]
-  )
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target as Node) &&
+      !(event.target as HTMLElement).closest(`.${s.menuBtn}`)
+    ) {
+      setOpenedMenu(false)
+    }
+  }, [])
 
   useEffect(() => {
     if (openedMenu) {
@@ -61,7 +62,7 @@ export const SelectedPost = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [isModalOpen, handleClickOutside])
+  }, [openedMenu, handleClickOutside])
 
   const handleCloseOut = () => {
     dispatch(hidePostModal())
@@ -72,7 +73,7 @@ export const SelectedPost = () => {
     dispatch(hidePostModal())
   }
 
-  if (post === null || !isModalOpen) {
+  if (!post || !isModalOpen) {
     return null
   }
 
@@ -122,7 +123,7 @@ export const SelectedPost = () => {
                 <Button
                   autoFocus={false}
                   className={clsx(s.menuBtn, openedMenu && s.openedMenu)}
-                  onClick={() => setOpenedMenu(!openedMenu)}
+                  onClick={() => setOpenedMenu(prev => !prev)}
                   variant={'text'}
                 >
                   <MoreHorizontalOutline height={24} width={24} />
@@ -162,26 +163,29 @@ export const SelectedPost = () => {
           </div>
           <div className={s.likesAndCommentsWrapper}>
             <div className={s.likesAndRepostsBlock}>
-              <div className={s.icons}>
-                <div className={s.leftIcons}>
-                  <div className={s.like} onClick={() => setLiked(prev => !prev)}>
-                    {liked ? (
-                      <Heart fill={'var( --color-danger-500)'} height={24} width={24} />
+              {isAuthorized && (
+                <div className={s.icons}>
+                  <div className={s.leftIcons}>
+                    <div className={s.like} onClick={() => setLiked(prev => !prev)}>
+                      {liked ? (
+                        <Heart fill={'var( --color-danger-500)'} height={24} width={24} />
+                      ) : (
+                        <HeartOutline fill={'white'} height={24} width={24} />
+                      )}
+                    </div>
+
+                    <PaperPlaneOutline fill={'white'} height={24} width={24} />
+                  </div>
+                  <div className={s.save} onClick={() => setSaved(prev => !prev)}>
+                    {saved ? (
+                      <Bookmark fill={'var( --color-accent-700)'} height={24} width={24} />
                     ) : (
-                      <HeartOutline fill={'white'} height={24} width={24} />
+                      <BookmarkOutline fill={'white'} height={24} width={24} />
                     )}
                   </div>
+                </div>
+              )}
 
-                  <PaperPlaneOutline fill={'white'} height={24} width={24} />
-                </div>
-                <div className={s.save} onClick={() => setSaved(prev => !prev)}>
-                  {saved ? (
-                    <Bookmark fill={'var( --color-accent-700)'} height={24} width={24} />
-                  ) : (
-                    <BookmarkOutline fill={'white'} height={24} width={24} />
-                  )}
-                </div>
-              </div>
               <div className={s.likes}>
                 <p className={s.likeCount}>
                   2243 &quot;<span>Like</span>&quot;
@@ -191,17 +195,19 @@ export const SelectedPost = () => {
                 </p>
               </div>
             </div>
-            <div className={s.addCommentBlock}>
-              <TextArea
-                className={s.addCommentArea}
-                label={''}
-                maxLength={500}
-                placeholder={'Add a Comment...'}
-              />
-              <Button className={s.publishBtn} variant={'text'}>
-                Publish
-              </Button>
-            </div>
+            {isAuthorized && (
+              <div className={s.addCommentBlock}>
+                <TextArea
+                  className={s.addCommentArea}
+                  label={''}
+                  maxLength={500}
+                  placeholder={'Add a Comment...'}
+                />
+                <Button className={s.publishBtn} variant={'text'}>
+                  Publish
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

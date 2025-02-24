@@ -4,7 +4,7 @@ import {
   showPostModal,
   useSentNewDescriptionMutation,
 } from '@/features/selectedPost'
-import { Carousel, DescriptionPost, useAppDispatch, useAppSelector } from '@/shared'
+import { DescriptionPost, useAppDispatch, useAppSelector } from '@/shared'
 import { Button } from '@rambo-react/ui-meteors'
 import Image from 'next/image'
 
