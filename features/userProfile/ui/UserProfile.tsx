@@ -34,9 +34,9 @@ export const UserProfile = ({ userId }: { userId?: string }) => {
         </div>
         <div className={clsx(s.item, s.itemNameProfile)}>
           <span className={s.titleProfile}>{username}</span>
-          <Button className={s.btn} variant={'secondary'}>
+          {/* <Button className={s.btn} variant={'secondary'}>
             Profile Settings
-          </Button>
+          </Button> */}
         </div>
         <div className={clsx(s.item, s.itemStaticProfile)}>
           <span className={s.statistic}>
