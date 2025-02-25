@@ -13,7 +13,17 @@ export const getPostApi = baseApi.injectEndpoints({
     getPostById: builder.query<PostType, string>({
       query: id => `posts/${id}`,
     }),
+    sentNewDescription: builder.mutation<any, { description?: string; id?: string }>({
+      query: ({ description, id }) => {
+        return {
+          body: { description },
+          method: 'PUT',
+          url: `posts/${id}`,
+        }
+      },
+    }),
   }),
 })
 
-export const { useDeletePostByIdMutation, useGetPostByIdQuery } = getPostApi
+export const { useDeletePostByIdMutation, useGetPostByIdQuery, useSentNewDescriptionMutation } =
+  getPostApi

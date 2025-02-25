@@ -5,8 +5,14 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL_API,
     credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-      headers.set('Content-type', 'application/json; charset=utf-8')
+    prepareHeaders: (headers, { arg, getState }) => {
+      if (typeof arg === 'object' && arg !== null && 'body' in arg) {
+        const isFormData = arg.body instanceof FormData
+
+        if (!isFormData && !headers.get('Content-Type')?.includes('multipart/form-data')) {
+          headers.set('Content-Type', 'application/json; charset=utf-8')
+        }
+      }
       const state = getState() as RootState
       const token = state.auth.accessToken
 

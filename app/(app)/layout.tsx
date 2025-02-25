@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react'
 
-import { CreatePost } from '@/features'
+import { CreatePost, EditPostContainer } from '@/features'
 import { ContentContainer, SidebarLayout, useAppSelector } from '@/shared'
 import { HeaderApp, HeaderPublic, SidebarApp } from '@/widgets'
 
@@ -21,6 +21,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
         <ContentContainer>{children}</ContentContainer>
       )}
       <CreatePost />
+      <EditPostContainer />
     </>
   )
 }
