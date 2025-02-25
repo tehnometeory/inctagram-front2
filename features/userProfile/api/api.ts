@@ -1,20 +1,13 @@
 import { baseApi } from '@/app'
-import { ProfileUserPostsResponse, ProfileUserResponse } from '@/features/profileUser/api/types'
+import { ProfileUserPostsResponse, ProfileUserResponse } from '@/features/userProfile/api/types'
 
-export const profileUserApi = baseApi.injectEndpoints({
+export const userProfileApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     myProfile: builder.query<ProfileUserResponse, void>({
       providesTags: ['Profile', 'Post', 'Posts'],
       query: () => ({
         method: 'GET',
         url: 'profile/my-profile',
-      }),
-    }),
-    myProfilePosts: builder.query<ProfileUserPostsResponse, number>({
-      providesTags: ['Posts', 'Post'],
-      query: page => ({
-        method: 'GET',
-        url: `posts/my-profile-posts?page=${page}`,
       }),
     }),
     profileByIdPosts: builder.query<ProfileUserPostsResponse, { id: string; page: number }>({
@@ -24,8 +17,7 @@ export const profileUserApi = baseApi.injectEndpoints({
         url: `posts/profile-posts/${id}?page=${page}`,
       }),
     }),
-
-    profileUserById: builder.query<ProfileUserResponse, string>({
+    userProfileById: builder.query<ProfileUserResponse, string>({
       providesTags: ['Profile', 'Posts', 'Post'],
       query: id => ({
         method: 'GET',
@@ -35,9 +27,5 @@ export const profileUserApi = baseApi.injectEndpoints({
   }),
 })
 
-export const {
-  useMyProfilePostsQuery,
-  useMyProfileQuery,
-  useProfileByIdPostsQuery,
-  useProfileUserByIdQuery,
-} = profileUserApi
+export const { useMyProfileQuery, useProfileByIdPostsQuery, useUserProfileByIdQuery } =
+  userProfileApi

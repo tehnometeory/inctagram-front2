@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { setAlert } from '@/entities'
 import { useAppDispatch } from '@/shared'
 
-import { useGetPostByIdQuery } from '../api/api'
+import { useGetPostByIdQuery } from '../api'
 import { setSelectedPost, showPostModal } from '../model'
 
 export const useGetPost = (postId: string) => {

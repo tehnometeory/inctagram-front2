@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 
-import { Photo } from '@/features'
-import { Carousel, getTimeAgo } from '@/shared'
+import { Carousel, Photo, getTimeAgo } from '@/shared'
 import clsx from 'clsx'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import s from './Post.module.scss'
 
@@ -13,11 +13,21 @@ type Props = {
   avatar?: string
   description: string
   photos: Photo[]
+  postId: string
   publicationTime: string
+  userId: string
   username: string
 }
 
-export const Post = ({ avatar, description, photos, publicationTime, username }: Props) => {
+export const Post = ({
+  avatar,
+  description,
+  photos,
+  postId,
+  publicationTime,
+  userId,
+  username,
+}: Props) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
 
   const onShowMoreClickHandler = () => setIsDescriptionExpanded(!isDescriptionExpanded)
@@ -34,7 +44,9 @@ export const Post = ({ avatar, description, photos, publicationTime, username }:
 
   return (
     <div className={s.publicPagePost}>
-      <div className={clsx(s.postImages, isDescriptionExpanded && s.hiden)}>{photo}</div>
+      <Link href={`/profile/${userId}?postId=${postId}`}>
+        <div className={clsx(s.postImages, isDescriptionExpanded && s.hiden)}>{photo}</div>
+      </Link>
 
       <div className={s.user}>
         <Image
