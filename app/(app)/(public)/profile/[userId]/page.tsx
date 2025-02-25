@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-import { SelectedPost, UserProfile, showPostModal, useGetPost } from '@/features'
+import { EditPostContainer, SelectedPost, UserProfile, showPostModal, useGetPost } from '@/features'
 import { useAppDispatch } from '@/shared'
 import { useParams, useSearchParams } from 'next/navigation'
 
@@ -25,6 +25,7 @@ export default function ProfilePage() {
     <>
       <UserProfile userId={userId as string} />
       <SelectedPost />
+      <EditPostContainer />
     </>
   )
 }

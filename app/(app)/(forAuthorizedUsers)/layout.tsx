@@ -2,7 +2,6 @@
 
 import { ReactNode, useEffect } from 'react'
 
-import { CreatePost } from '@/features'
 import { RoutesApp, useAppSelector, useNRouter } from '@/shared'
 
 export default function AuthorizedUsersLayout({ children }: { children: ReactNode }) {
@@ -19,10 +18,5 @@ export default function AuthorizedUsersLayout({ children }: { children: ReactNod
     return null
   }
 
-  return (
-    <>
-      {children}
-      <CreatePost />
-    </>
-  )
+  return children
 }
