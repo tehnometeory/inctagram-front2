@@ -22,6 +22,7 @@ import clsx from 'clsx'
 
 import s from './SelectedPost.module.scss'
 
+import { showEditModal } from '..'
 import { convertToRelativeTime } from '../utils/convertToRelativeTime'
 import { getDateParts } from '../utils/getDateParts'
 
@@ -62,6 +63,15 @@ export const SelectedPost = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [openedMenu, handleClickOutside])
+
+  const handleCloseOut = () => {
+    dispatch(hidePostModal())
+  }
+
+  const handleClickEditPost = () => {
+    dispatch(showEditModal())
+    dispatch(hidePostModal())
+  }
 
   if (!post || !isModalOpen) {
     return null
@@ -120,7 +130,11 @@ export const SelectedPost = () => {
                 </Button>
                 {openedMenu && (
                   <div className={s.editAndDeletePostBlock} ref={menuRef}>
-                    <Button className={s.editAndDeletePostBtn} variant={'text'}>
+                    <Button
+                      className={s.editAndDeletePostBtn}
+                      onClick={handleClickEditPost}
+                      variant={'text'}
+                    >
                       <EditOutline height={24} width={24} />
                       <p>Edit Post</p>
                     </Button>

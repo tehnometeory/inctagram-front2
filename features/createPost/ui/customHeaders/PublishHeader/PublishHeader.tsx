@@ -6,7 +6,7 @@ import s from '../customHeaders.module.scss'
 
 export const PublishHeader = () => {
   const { goBackHandler, publishPostHandler } = usePublishPost()
-  const description = useAppSelector(state => state.createPost.currentPost.description)
+  const description = useAppSelector(state => state.createPost.currentPost.description) || ''
 
   return (
     <div className={s.headerContainer}>

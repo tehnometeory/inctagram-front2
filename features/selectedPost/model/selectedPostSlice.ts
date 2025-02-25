@@ -1,6 +1,7 @@
+import { PostType } from '@/shared'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-import { Post, SelectedPostState } from './types'
+import { SelectedPostState } from './types'
 
 const initialState: SelectedPostState = {
   isEditing: false,
@@ -16,12 +17,23 @@ export const selectedPostSlice = createSlice({
       state.post = null
       state.isEditing = false
     },
+    hideEditModal(state) {
+      state.isEditing = false
+    },
     hidePostModal(state) {
       state.isModalOpen = false
     },
-    setSelectedPost: (state, action: PayloadAction<Post>) => {
+    sentNewPostDescription(state, action: PayloadAction<{ newDescription: string }>) {
+      if (state.post) {
+        state.post.description = action.payload.newDescription
+      }
+    },
+    setSelectedPost: (state, action: PayloadAction<PostType>) => {
       state.post = action.payload
       state.isEditing = false
+    },
+    showEditModal(state) {
+      state.isEditing = true
     },
     showPostModal(state) {
       state.isModalOpen = true
@@ -29,7 +41,14 @@ export const selectedPostSlice = createSlice({
   },
 })
 
-export const { clearSelectedPost, hidePostModal, setSelectedPost, showPostModal } =
-  selectedPostSlice.actions
+export const {
+  clearSelectedPost,
+  hideEditModal,
+  hidePostModal,
+  sentNewPostDescription,
+  setSelectedPost,
+  showEditModal,
+  showPostModal,
+} = selectedPostSlice.actions
 
 export const selectedPostReducer = selectedPostSlice.reducer

@@ -4,13 +4,13 @@ import { Button } from '@rambo-react/ui-meteors'
 import { clsx } from 'clsx'
 import Image from 'next/image'
 
-import s from './ProfileUser.module.scss'
+import s from './UserProfile.module.scss'
 
-import { useProfileByIdPostsQuery, useProfileUserByIdQuery } from './api'
-import { Post } from './post/Post'
+import { useProfileByIdPostsQuery, useUserProfileByIdQuery } from '../api'
+import { Post } from './Post'
 
-export const ProfileUser = ({ userId }: { userId?: string }) => {
-  const { data } = useProfileUserByIdQuery(userId as string)
+export const UserProfile = ({ userId }: { userId?: string }) => {
+  const { data } = useUserProfileByIdQuery(userId as string)
 
   const { data: posts } = useProfileByIdPostsQuery({ id: userId as string, page: 1 })
 
@@ -18,8 +18,10 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
     return null
   }
 
+  const { aboutMe, postsCount, profileFollowers, profileFollowing, username } = data
+
   return (
-    <div className={s.profileUser}>
+    <div className={s.userProfile}>
       <div className={s.profile}>
         <div className={clsx(s.item, s.itemImage)}>
           <Image
@@ -31,35 +33,31 @@ export const ProfileUser = ({ userId }: { userId?: string }) => {
           />
         </div>
         <div className={clsx(s.item, s.itemNameProfile)}>
-          <span className={s.titleProfile}>{data.username}</span>
-          <Button className={s.btn} variant={'secondary'}>
+          <span className={s.titleProfile}>{username}</span>
+          {/* <Button className={s.btn} variant={'secondary'}>
             Profile Settings
-          </Button>
+          </Button> */}
         </div>
         <div className={clsx(s.item, s.itemStaticProfile)}>
           <span className={s.statistic}>
-            {data.profileFollowing}
+            {profileFollowing}
             <br />
             <small className={s.textStatistic}>Following</small>
           </span>
           <span className={s.statistic}>
-            {data.profileFollowers} <br />
+            {profileFollowers} <br />
             <small className={s.textStatistic}> Followers</small>
           </span>
           <span className={s.statistic}>
-            {data.postsCount}
+            {postsCount}
             <br /> <small className={s.textStatistic}>Publications</small>
           </span>
         </div>
         <div className={clsx(s.item, s.itemAboutMe)}>
-          <p className={s.textInfo}>{data.aboutMe}</p>
+          <p className={s.textInfo}>{aboutMe}</p>
         </div>
       </div>
-      <div className={s.posts}>
-        {posts?.map(post => {
-          return <Post key={post.id} post={post} />
-        })}
-      </div>
+      <div className={s.posts}>{posts?.map(post => <Post key={post.id} post={post} />)}</div>
     </div>
   )
 }
