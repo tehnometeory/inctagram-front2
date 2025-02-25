@@ -1,6 +1,7 @@
+import { PostType } from '@/shared'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-import { Post, SelectedPostState } from './types'
+import { SelectedPostState } from './types'
 
 const initialState: SelectedPostState = {
   isEditing: false,
@@ -27,7 +28,7 @@ export const selectedPostSlice = createSlice({
         state.post.description = action.payload.newDescription
       }
     },
-    setSelectedPost: (state, action: PayloadAction<Post>) => {
+    setSelectedPost: (state, action: PayloadAction<PostType>) => {
       state.post = action.payload
       state.isEditing = false
     },

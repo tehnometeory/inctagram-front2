@@ -1,8 +1,7 @@
-import { BASE_URL_API } from '@/shared'
+import { BASE_URL_API, PostType } from '@/shared'
 
 import s from './Posts.module.scss'
 
-import { PostType } from '../../model'
 import { Post } from './Post'
 
 export const Posts = async () => {
@@ -26,12 +25,14 @@ export const Posts = async () => {
       {isError ? (
         <h3>No posts...</h3>
       ) : (
-        posts.map(({ createdAt, description, id, photos, user: { username } }) => (
+        posts.map(({ createdAt, description, id, photos, user: { username }, userId }) => (
           <Post
             description={description}
             key={id}
             photos={photos}
+            postId={id}
             publicationTime={createdAt}
+            userId={userId}
             username={username}
           />
         ))
