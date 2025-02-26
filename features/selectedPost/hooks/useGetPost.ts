@@ -29,7 +29,6 @@ export const useGetPost = (postId: string) => {
     const result = await refetch()
 
     if (result.data) {
-      debugger
       dispatch(setSelectedPost(result.data))
       dispatch(showPostModal())
     }
