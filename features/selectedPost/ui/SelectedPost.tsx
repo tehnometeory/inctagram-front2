@@ -64,13 +64,9 @@ export const SelectedPost = () => {
     }
   }, [openedMenu, handleClickOutside])
 
-  const handleCloseOut = () => {
-    dispatch(hidePostModal())
-  }
-
   const handleClickEditPost = () => {
     dispatch(showEditModal())
-    dispatch(hidePostModal())
+    setOpenedMenu(false)
   }
 
   if (!post || !isModalOpen) {
@@ -94,9 +90,9 @@ export const SelectedPost = () => {
       dispatch(clearSelectedPost())
       setOpenDeleteModal(false)
       dispatch(hidePostModal())
-      dispatch(setAlert({ message: 'Пост удален', type: 'accepted' }))
+      dispatch(setAlert({ message: 'Post deleted', type: 'accepted' }))
     } catch (error) {
-      dispatch(setAlert({ message: 'Ошибка удаления поста', type: 'error' }))
+      dispatch(setAlert({ message: 'Error deleting post', type: 'error' }))
     }
   }
 
@@ -136,7 +132,7 @@ export const SelectedPost = () => {
                       variant={'text'}
                     >
                       <EditOutline height={24} width={24} />
-                      <p>Edit Post</p>
+                      <span>Edit Post</span>
                     </Button>
                     <Button
                       className={s.editAndDeletePostBtn}
@@ -144,7 +140,7 @@ export const SelectedPost = () => {
                       variant={'text'}
                     >
                       <TrashOutline height={24} width={24} />
-                      <p>Delete Post</p>
+                      <span>Delete Post</span>
                     </Button>
                   </div>
                 )}
