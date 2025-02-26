@@ -22,13 +22,7 @@ export const EditPostContainer = () => {
 
   return (
     <>
-      <Modal
-        className={s.modal}
-        isOpen={isEdit}
-        onClose={closeHandler}
-        onCloseOut={closeHandler}
-        title={'Edit Post'}
-      >
+      <Modal className={s.modal} isOpen={isEdit} onClose={closeHandler} title={'Edit Post'}>
         <EditPost />
       </Modal>
     </>
