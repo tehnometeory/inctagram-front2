@@ -3,36 +3,19 @@ import { useAppDispatch, useAppSelector } from '@/shared'
 
 import { usePublishPostMutation } from '../api'
 import { hideModal, prevStep, resetCurrentPost } from '../model'
-import { ImageDraft } from '../model/types'
+import { convertUrlsToBlobs } from '../utils/ConvertUrlsToBlobs'
 
 export const usePublishPost = () => {
   const dispatch = useAppDispatch()
-  const [publishPost] = usePublishPostMutation()
-  const images = useAppSelector(state => state.createPost.currentPost.images)
-  const description = useAppSelector(state => state.createPost.currentPost.description)
-
-  const convertUrlsToBlobs = (images: ImageDraft[]) => {
-    return Promise.all(
-      images.map(url => fetch(url.originalImage).then(response => response.blob()))
-    )
-  }
+  const [publishPost, { isLoading }] = usePublishPostMutation()
+  const { description, images } = useAppSelector(state => state.createPost.currentPost)
 
   const goBackHandler = () => {
     dispatch(prevStep())
   }
 
   const publishPostHandler = async () => {
-    const formData = new FormData()
-
-    if (description) {
-      formData.append('description', description)
-    }
-
-    const blobs = await convertUrlsToBlobs(images)
-
-    blobs.forEach(blob => {
-      formData.append('files', blob)
-    })
+    const formData = await convertUrlsToBlobs(images, description || '')
 
     try {
       await publishPost(formData).unwrap()
@@ -51,6 +34,7 @@ export const usePublishPost = () => {
 
   return {
     goBackHandler,
+    isLoading,
     publishPostHandler,
   }
 }

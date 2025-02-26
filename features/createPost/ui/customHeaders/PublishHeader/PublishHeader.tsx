@@ -1,12 +1,10 @@
 import { usePublishPost } from '@/features/createPost/hooks/usePublishPost'
-import { useAppSelector } from '@/shared'
 import { ArrowIosBack, Button } from '@rambo-react/ui-meteors'
 
 import s from '../customHeaders.module.scss'
 
 export const PublishHeader = () => {
-  const { goBackHandler, publishPostHandler } = usePublishPost()
-  const description = useAppSelector(state => state.createPost.currentPost.description) || ''
+  const { goBackHandler, isLoading, publishPostHandler } = usePublishPost()
 
   return (
     <div className={s.headerContainer}>
@@ -16,7 +14,7 @@ export const PublishHeader = () => {
       <p className={s.title}>Publication</p>
       <Button
         className={s.rightButton}
-        disabled={!description}
+        disabled={isLoading}
         onClick={publishPostHandler}
         variant={'text'}
       >

@@ -46,7 +46,7 @@ export const DescriptionPost = ({
           onChange={onChangeHandler}
           value={description}
         />
-        {showSeparator ? <div className={s.separator} /> : null}
+        {showSeparator && <div className={s.separator} />}
         {children}
       </div>
     </div>
