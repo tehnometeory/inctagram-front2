@@ -1,2 +1,2 @@
 export * from './SelectedPost'
-export * from './editPost/EditPostContainer'
+export * from './editPost'

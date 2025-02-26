@@ -1,6 +1,7 @@
+import { useState } from 'react'
+
 import {
-  hideEditModal,
-  sentNewPostDescription,
+  setSelectedPost,
   showPostModal,
   useSentNewDescriptionMutation,
 } from '@/features/selectedPost'
@@ -14,15 +15,22 @@ export const EditPost = () => {
   const post = useAppSelector(state => state.selectedPost.post)
   const id = post?.id
   const images = post?.photos?.map(photo => photo.url) ?? []
-  const urlProfile = post?.user.username
-  const description = post?.description
+  const userName = post?.user.username
+  const [newDescription, setNewDescription] = useState(post?.description || '')
   const [sentNewDescription] = useSentNewDescriptionMutation()
   const dispatch = useAppDispatch()
 
   const handleSentNewDescription = () => {
-    sentNewDescription({ description, id })
-    dispatch(hideEditModal())
-    dispatch(showPostModal())
+    if (id && newDescription) {
+      sentNewDescription({ description: newDescription, id })
+        .then(response => {
+          dispatch(setSelectedPost({ ...post, description: newDescription }))
+          dispatch(showPostModal())
+        })
+        .catch(error => {
+          console.error('Error sending new description:', error)
+        })
+    }
   }
 
   return (
@@ -47,9 +55,9 @@ export const EditPost = () => {
         </div>
       </div>
       <DescriptionPost
-        description={description || ''}
-        sentNewPostDescription={sentNewPostDescription}
-        urlProfile={urlProfile}
+        description={newDescription}
+        sendNewPostDescription={setNewDescription}
+        userName={userName}
       >
         <Button className={s.buttonEdit} onClick={handleSentNewDescription}>
           Save Changes

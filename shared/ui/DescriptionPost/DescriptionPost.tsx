@@ -1,43 +1,37 @@
 import React, { ChangeEvent, ReactNode, useCallback } from 'react'
 
-import { useAppDispatch } from '@/shared'
+import { UserNameAndAvatar } from '@/shared'
 import { TextArea } from '@rambo-react/ui-meteors'
-import { PayloadAction } from '@reduxjs/toolkit'
 
 import s from './DescriptionPost.module.scss'
-
-import { NameAndAvatarUser } from '../NameAndAvatarUser/NameAndAvatarUser'
 
 type Props = {
   children: ReactNode
   description: string
-  sentNewPostDescription: (payload: { newDescription: string }) => PayloadAction<{
-    newDescription: string
-  }>
+  sendNewPostDescription: (newDescription: string) => void
   showSeparator?: boolean
-  urlProfile?: string
+  userName?: string
 }
 export const DescriptionPost = ({
   children,
   description,
-  sentNewPostDescription,
+  sendNewPostDescription,
   showSeparator = false,
-  urlProfile = '',
+  userName = 'URLProfiele',
 }: Props) => {
-  const dispatch = useAppDispatch()
   const onChangeHandler = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
       const newDescription = event.currentTarget.value
 
-      dispatch(sentNewPostDescription({ newDescription }))
+      sendNewPostDescription(newDescription)
     },
-    [dispatch, sentNewPostDescription]
+    [sendNewPostDescription]
   )
 
   return (
     <div className={s.containerWrapper}>
       <div className={s.container}>
-        <NameAndAvatarUser urlProfile={urlProfile} />
+        <UserNameAndAvatar userName={userName} />
         <TextArea
           className={s.description}
           label={'Add publication descriptions'}

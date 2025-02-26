@@ -23,11 +23,6 @@ export const selectedPostSlice = createSlice({
     hidePostModal(state) {
       state.isModalOpen = false
     },
-    sentNewPostDescription(state, action: PayloadAction<{ newDescription: string }>) {
-      if (state.post) {
-        state.post.description = action.payload.newDescription
-      }
-    },
     setSelectedPost: (state, action: PayloadAction<PostType>) => {
       state.post = action.payload
       state.isEditing = false
@@ -45,7 +40,6 @@ export const {
   clearSelectedPost,
   hideEditModal,
   hidePostModal,
-  sentNewPostDescription,
   setSelectedPost,
   showEditModal,
   showPostModal,
