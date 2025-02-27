@@ -44,9 +44,10 @@ export const EditPost = () => {
           }}
         >
           <Image
-            alt={`Image 1}`}
+            alt={`Image 1`}
             fill
             loading={'eager'}
+            sizes={'(max-width: 600px) 100vw, 490px'}
             src={images[0]}
             style={{
               objectFit: 'cover',
