@@ -74,6 +74,7 @@ export const Carousel = ({ activeSlide = 0, images, miniVersion, passActiveSlide
                 fill
                 loading={index === 0 ? 'eager' : 'lazy'}
                 priority={index === 0}
+                sizes={'(max-width: 600px) 100vw, 490px'}
                 src={src}
                 style={{
                   filter: currentStep === 3 && index === activeSlide ? activeFilter : 'none',
