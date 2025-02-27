@@ -28,6 +28,7 @@ export const UserProfile = ({ userId }: { userId?: string }) => {
             alt={'user avatar'}
             className={s.avatar}
             height={204}
+            priority
             src={'/images/avatar-default.webp'}
             width={204}
           />

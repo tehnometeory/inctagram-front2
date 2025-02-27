@@ -26,6 +26,7 @@ export const Post = ({ post }: Props) => {
         alt={`Post image ${post.id}`}
         className={s.imagePost}
         height={228}
+        priority
         src={imageUrl}
         width={234}
       />
