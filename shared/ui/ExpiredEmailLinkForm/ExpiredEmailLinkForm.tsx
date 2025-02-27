@@ -2,7 +2,7 @@
 import React from 'react'
 import { Control } from 'react-hook-form'
 
-import { ControlledInput, SendEmailModal } from '@/shared'
+import { ControlledInput, SentEmailModal } from '@/shared'
 import { Button } from '@rambo-react/ui-meteors'
 import Image from 'next/image'
 
@@ -73,7 +73,7 @@ export const ExpiredEmailLinkForm = ({
         />
       </form>
       {email && showModal && handleCloseShowModal && (
-        <SendEmailModal email={email} isOpen={showModal} onCloseHandler={handleCloseShowModal} />
+        <SentEmailModal email={email} isOpen={showModal} onCloseHandler={handleCloseShowModal} />
       )}
     </>
   )
