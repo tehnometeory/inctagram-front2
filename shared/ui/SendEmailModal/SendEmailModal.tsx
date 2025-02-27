@@ -1,6 +1,6 @@
 import { Button, Modal } from '@rambo-react/ui-meteors'
 
-import s from './SentEmailModal.module.scss'
+import s from './SendEmailModal.module.scss'
 
 type Props = {
   email: string
@@ -8,7 +8,7 @@ type Props = {
   onCloseHandler: () => void
 }
 
-export const SentEmailModal = ({ email, isOpen, onCloseHandler }: Props) => {
+export const SendEmailModal = ({ email, isOpen, onCloseHandler }: Props) => {
   return (
     <Modal className={s.modal} isOpen={isOpen} onClose={onCloseHandler} title={'Email sent'}>
       <div className={s.content}>

@@ -1,6 +1,6 @@
 'use client'
 
-import { ControlledInput, FormContainer, SentEmailModal } from '@/shared'
+import { ControlledInput, FormContainer, SendEmailModal } from '@/shared'
 import { Button, Recaptcha } from '@rambo-react/ui-meteors'
 import Link from 'next/link'
 
@@ -55,7 +55,7 @@ export function ForgotPasswordForm() {
           </div>
         )}
       </form>
-      <SentEmailModal email={email} isOpen={showModal} onCloseHandler={handleCloseShowModal} />
+      <SendEmailModal email={email} isOpen={showModal} onCloseHandler={handleCloseShowModal} />
     </FormContainer>
   )
 }
