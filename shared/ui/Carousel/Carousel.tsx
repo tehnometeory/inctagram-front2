@@ -26,6 +26,7 @@ export const Carousel = ({ activeSlide = 0, images, miniVersion, passActiveSlide
   const activeFilter = useAppSelector(
     state => state.createPost.currentPost.images[activeSlide]?.activeFilter
   )
+  const currentStep = useAppSelector(state => state.createPost.currentPost.currentStep)
 
   const handleSlideChange = useCallback(
     (swiper: any) => {
@@ -75,7 +76,7 @@ export const Carousel = ({ activeSlide = 0, images, miniVersion, passActiveSlide
                 priority={index === 0}
                 src={src}
                 style={{
-                  filter: index === activeSlide ? activeFilter : 'none',
+                  filter: currentStep === 3 && index === activeSlide ? activeFilter : 'none',
                   objectFit: 'cover',
                 }}
               />
