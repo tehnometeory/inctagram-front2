@@ -1,5 +1,7 @@
+import { useUserProfileByIdQuery } from '@/features'
 import { updateDescription } from '@/features/createPost/model'
 import { Carousel, DescriptionPost, useAppDispatch, useAppSelector } from '@/shared'
+import { useParams } from 'next/navigation'
 
 import s from './PublicationContainer.module.scss'
 
@@ -9,7 +11,10 @@ export const PublicationContainer = () => {
   {
     const { description, images } = useAppSelector(state => state.createPost.currentPost)
     const filteredImages = images.map(image => image.filteredImage)
-
+    const { userId } = useParams()
+    const { username } = useUserProfileByIdQuery(userId as string, {
+      selectFromResult: ({ data }) => ({ username: data?.username }),
+    })
     const dispatch = useAppDispatch()
 
     const handleDescriptionChange = (newDescription: string) => {
@@ -23,7 +28,7 @@ export const PublicationContainer = () => {
           description={description as string}
           sendNewPostDescription={handleDescriptionChange}
           showSeparator
-          userName={'URL_Profile'}
+          userName={username}
         >
           <LocationPost />
         </DescriptionPost>
