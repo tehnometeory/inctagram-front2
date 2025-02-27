@@ -8,6 +8,7 @@ export const publishPostApi = baseApi.injectEndpoints({
       query: () => 'posts/newest-posts',
     }),
     publishPost: builder.mutation<PostResponse<GetPosts>, FormData>({
+      invalidatesTags: ['Post'],
       query: post => {
         return {
           body: post,

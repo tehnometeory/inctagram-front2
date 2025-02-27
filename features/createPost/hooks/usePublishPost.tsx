@@ -8,12 +8,11 @@ import { ImageDraft } from '../model/types'
 export const usePublishPost = () => {
   const dispatch = useAppDispatch()
   const [publishPost] = usePublishPostMutation()
-  const images = useAppSelector(state => state.createPost.currentPost.images)
-  const description = useAppSelector(state => state.createPost.currentPost.description)
+  const { description, images } = useAppSelector(state => state.createPost.currentPost)
 
   const convertUrlsToBlobs = (images: ImageDraft[]) => {
     return Promise.all(
-      images.map(url => fetch(url.originalImage).then(response => response.blob()))
+      images.map(url => fetch(url.filteredImage).then(response => response.blob()))
     )
   }
 
