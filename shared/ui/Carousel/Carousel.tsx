@@ -41,7 +41,7 @@ export const Carousel = ({ activeSlide = 0, images, miniVersion, passActiveSlide
   return (
     <div style={{ height: miniVersion ? 240 : 503, width: miniVersion ? 234 : 490 }}>
       <Swiper
-        loop
+        loop={shouldShowNavigation}
         modules={[Navigation, Pagination]}
         navigation={{
           nextEl: `.${styles[`swiperButtonNext`]}`,
