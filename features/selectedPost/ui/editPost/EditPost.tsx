@@ -1,10 +1,9 @@
-'use client'
 import { useState } from 'react'
 
 import {
   setSelectedPost,
   showPostModal,
-  useSentNewDescriptionMutation,
+  useSendNewDescriptionMutation,
 } from '@/features/selectedPost'
 import { DescriptionPost, useAppDispatch, useAppSelector } from '@/shared'
 import { Button } from '@rambo-react/ui-meteors'
@@ -18,12 +17,12 @@ export const EditPost = () => {
   const images = post?.photos?.map(photo => photo.url) ?? []
   const userName = post?.user.username
   const [newDescription, setNewDescription] = useState(post?.description || '')
-  const [sentNewDescription, { isLoading }] = useSentNewDescriptionMutation()
+  const [sendNewDescription] = useSendNewDescriptionMutation()
   const dispatch = useAppDispatch()
 
-  const handleSentNewDescription = () => {
+  const handleSendNewDescription = () => {
     if (id && newDescription) {
-      sentNewDescription({ description: newDescription, id })
+      sendNewDescription({ description: newDescription, id })
         .then(response => {
           dispatch(setSelectedPost({ ...post, description: newDescription }))
           dispatch(showPostModal())
@@ -45,9 +44,9 @@ export const EditPost = () => {
           }}
         >
           <Image
-            alt={`Image 1}`}
+            alt={`Image 1`}
             fill
-            loading={'eager'}
+            sizes={'(max-width: 600px) 100vw, 490px'}
             src={images[0]}
             style={{
               objectFit: 'cover',
@@ -60,7 +59,7 @@ export const EditPost = () => {
         sendNewPostDescription={setNewDescription}
         userName={userName}
       >
-        <Button className={s.buttonEdit} disabled={isLoading} onClick={handleSentNewDescription}>
+        <Button className={s.buttonEdit} onClick={handleSendNewDescription}>
           Save Changes
         </Button>
       </DescriptionPost>
