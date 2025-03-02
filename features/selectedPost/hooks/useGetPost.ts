@@ -10,7 +10,8 @@ import { setSelectedPost, showPostModal } from '../model'
 
 export const useGetPost = (postId: string) => {
   const dispatch = useAppDispatch()
-  const { data: post, error, isLoading, refetch } = useGetPostByIdQuery(postId)
+  const skip = !postId
+  const { data: post, error, isLoading, refetch } = useGetPostByIdQuery(postId, { skip })
 
   useEffect(() => {
     if (!post) {

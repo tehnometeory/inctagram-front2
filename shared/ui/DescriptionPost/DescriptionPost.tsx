@@ -38,7 +38,7 @@ export const DescriptionPost = ({
           maxLength={500}
           maxLengthVisible
           onChange={onChangeHandler}
-          value={description}
+          value={description || ''}
         />
         {showSeparator && <div className={s.separator} />}
         {children}
