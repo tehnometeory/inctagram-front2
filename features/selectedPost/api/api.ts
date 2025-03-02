@@ -25,5 +25,5 @@ export const getPostApi = baseApi.injectEndpoints({
   }),
 })
 
-export const { useDeletePostByIdMutation, useGetPostByIdQuery, useSentNewDescriptionMutation } =
+export const { useDeletePostByIdMutation, useGetPostByIdQuery, useSendNewDescriptionMutation } =
   getPostApi

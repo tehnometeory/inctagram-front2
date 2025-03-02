@@ -3,7 +3,7 @@ import { useState } from 'react'
 import {
   setSelectedPost,
   showPostModal,
-  useSentNewDescriptionMutation,
+  useSendNewDescriptionMutation,
 } from '@/features/selectedPost'
 import { DescriptionPost, useAppDispatch, useAppSelector } from '@/shared'
 import { Button } from '@rambo-react/ui-meteors'
