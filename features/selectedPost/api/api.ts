@@ -14,6 +14,7 @@ export const getPostApi = baseApi.injectEndpoints({
       query: id => `posts/${id}`,
     }),
     sentNewDescription: builder.mutation<any, { description: string; id: string }>({
+      invalidatesTags: ['Post'],
       query: ({ description, id }) => {
         return {
           body: { description },

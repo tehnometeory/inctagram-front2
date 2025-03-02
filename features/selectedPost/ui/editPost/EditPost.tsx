@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 
 import {
@@ -17,7 +18,7 @@ export const EditPost = () => {
   const images = post?.photos?.map(photo => photo.url) ?? []
   const userName = post?.user.username
   const [newDescription, setNewDescription] = useState(post?.description || '')
-  const [sentNewDescription] = useSentNewDescriptionMutation()
+  const [sentNewDescription, { isLoading }] = useSentNewDescriptionMutation()
   const dispatch = useAppDispatch()
 
   const handleSentNewDescription = () => {
@@ -59,7 +60,7 @@ export const EditPost = () => {
         sendNewPostDescription={setNewDescription}
         userName={userName}
       >
-        <Button className={s.buttonEdit} onClick={handleSentNewDescription}>
+        <Button className={s.buttonEdit} disabled={isLoading} onClick={handleSentNewDescription}>
           Save Changes
         </Button>
       </DescriptionPost>
